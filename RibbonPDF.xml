@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<customUI xmlns="http://schemas.microsoft.com/office/2009/07/customui" onLoad="Ribbon_Load">
+  <ribbon>
+    <tabs>
+      <tab idMso="TabAddIns" label="GrabTabu">
+        <group id="SelectFiles" label="קבצים">
+          <button id="selectID" onAction="selectPDF_Click" label="בחר" size="large" getImage="get_PDF_icon"/>
+          <button id="BuildTaboo" onAction="buildTabu_Click" label="עבד נסחים" size="large" getImage="get_mincer_icon"/>
+        </group>
+        <group id="zhuiot" label="זכויות">
+          <button id="CreatePropertyID" onAction="createProperty_Click" label="תאור הנכס" size="large" getImage="get_property_icon"/>         
+          <button id="CreateLeasingID" onAction="createLeasing_Click" label="חוכרים" size="large" getImage="get_leasing_icon"/>
+          <button id="CreateMortgageID" onAction="createMortGage_Click" label="משכנתאות" size="large" getImage="get_Mortgage_icon"/>
+          <button id="CreateRemarkID" onAction="createRemark_Click" label="הערות" size="large" getImage="get_Remark_icon"/>
+		  <button id="CreateResultID" onAction="createOwners_Click" label="בעלים" size="large" getImage="get_table_icon"/>
+        </group>
+        <group id="batim" label="בתים משותפים">
+          <button id="BatimPropertyID" onAction="batimProperty_Click" label="רכוש משותף" size="large" getImage="get_batimproperty_icon"/>
+          <button id="CreateBatimLeasingID" onAction="createBatimLeasing_Click" label="חוכרים" size="large" getImage="get_leasing_icon"/>
+          <button id="CreateBatimMortgage" onAction="createBatimMortgage_Click" label="משכנתאות" size ="large" getImage="get_Mortgage_icon"/>
+          <button id="CreateBatimRemarks" onAction="createBatimRemarks_Click" label="הערות" size ="large" getImage="get_Remark_icon"/>
+          <button id="CreateBatimAttachments" onAction="createBatimAttachments_Click" label="הצמדות" size ="large" getImage="get_Attachments_icon"/>
+    	  <button id="BatimOwnersID" onAction="batimOwners_Click" label="בעלים" size="large" getImage="get_table_icon"/>
+
+		</group>
+        <group id="setup" label="אופציות">
+		  <button id="JoinSplit" onAction="JoinSplit_Click" label="איחוד וחלוקה" size="large" getImage="get_JoinSplit_icon"/>
+		  <button id="setup1" onAction="setup_Click" label="אופציות" size="large" getImage="get_option_icon"/>
+		</group>
+      </tab>
+    </tabs>
+  </ribbon>
+</customUI>
+
