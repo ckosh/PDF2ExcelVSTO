@@ -209,6 +209,7 @@ namespace PDF2ExcelVsto
             deleteAllFilesFromDirectory(TempFolder);
             deleteAllFilesFromDirectory(TempFolder+"\\CSV");
             deleteMail(mailCount);
+            messageTime.Clear();
             if (customertype < 99)
             {
                 savecBillingData(customerMail, NumberOfPDFFiles, resultExcelFile);
