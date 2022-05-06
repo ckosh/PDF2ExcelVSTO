@@ -35,6 +35,7 @@ namespace PDF2ExcelVsto
             string tempFolder = textBoxTempFolder.Text;
             int interval = Convert.ToInt32(textBoxDelay.Text) * 1000;
             bool debugMode = checkBoxDebugMode.Checked;
+            int obsticalMinutes = Convert.ToInt32(textBoxObsticalMinutes.Text);
             Log.Info("application started");
             while (true)
             {
@@ -52,7 +53,7 @@ namespace PDF2ExcelVsto
                     if (mailcount > 0)
                     {
                         int firstMail = 1;
-                        int count = batchClass.ActMailJob(firstMail, tempFolder, debugMode);
+                        int count = batchClass.ActMailJob(firstMail, tempFolder, debugMode, obsticalMinutes);
                         count = count + Int32.Parse(labelsent.Text);
                         labelsent.Text = count.ToString();
                     }

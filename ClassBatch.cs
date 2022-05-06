@@ -1,5 +1,6 @@
 ﻿
 
+using Common.Logging;
 using GrabNadlanLicense;
 using OpenPop.Mime;
 using OpenPop.Pop3;
@@ -36,6 +37,7 @@ namespace PDF2ExcelVsto
         bool DebugMode;
         bool batchMode = false;
         int customertype;
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         static Dictionary<string, DateTime> messageTime = new Dictionary<string, DateTime>();
 
@@ -84,7 +86,7 @@ namespace PDF2ExcelVsto
             objPop3Client.Disconnect();
             return j;
         }
-        public int ActMailJob(int mailCount, string tempFolder, bool debugMode)
+        public int ActMailJob(int mailCount, string tempFolder, bool debugMode, int obsticalMinutes)
         {
             string resultExcelFile;
             TempFolder = tempFolder;
@@ -99,7 +101,7 @@ namespace PDF2ExcelVsto
                 message = GetEmailContent(mailCount);
             }
 
-            if ( !removeObstical(message) ) //  over 30 minutes in que - remove
+            if ( !removeObstical(message, obsticalMinutes) ) //  over 30 minutes in que - remove
             {
                 deleteMail(mailCount);
                 string sub = "ארעה שגיעה בניתוח הנסחים - שלח את הקבצים שנית ל - grabnadlan@gmail.com";
@@ -107,8 +109,6 @@ namespace PDF2ExcelVsto
                 return 0;
 
             }
-
-
 
             if (message.Subject == "Registration")
             {
@@ -554,7 +554,7 @@ namespace PDF2ExcelVsto
             public List<MessagePart> Attachment;
         }
 
-        private bool  removeObstical(MessageModel msg)
+        private bool  removeObstical(MessageModel msg, int obsticalMinutes)
         {
             bool bret = true;
             string mesID = msg.MessageID;
@@ -566,6 +566,7 @@ namespace PDF2ExcelVsto
 
             if (messageTime.Count == 0)
             {
+                Log.Info("Message time stamp " + msg.MessageID + " " + dateTime.ToString());
                 messageTime.Add(msg.MessageID, dateTime);
                 return bret; ;
             }
@@ -579,8 +580,9 @@ namespace PDF2ExcelVsto
             if ( key == mesID)
             {
                 var diff = DateTime.Now - tim;
-                if ( diff.Minutes > 30)
+                if ( diff.Minutes > obsticalMinutes)
                 {
+                    Log.Info("Message check time difference " + msg.MessageID + " " + diff.Minutes.ToString());
                     messageTime.Clear();
                     bret = false;
                     return bret;

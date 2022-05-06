@@ -37,6 +37,7 @@ namespace PDF2ExcelVsto
             this.label2 = new System.Windows.Forms.Label();
             this.checkBoxDebugMode = new System.Windows.Forms.CheckBox();
             this.labelsent = new System.Windows.Forms.Label();
+            this.textBoxObsticalMinutes = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // buttonBatchMode
@@ -51,7 +52,7 @@ namespace PDF2ExcelVsto
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(55, 150);
+            this.button1.Location = new System.Drawing.Point(265, 174);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(94, 23);
             this.button1.TabIndex = 1;
@@ -115,11 +116,20 @@ namespace PDF2ExcelVsto
             this.labelsent.TabIndex = 7;
             this.labelsent.Text = "0";
             // 
+            // textBoxObsticalMinutes
+            // 
+            this.textBoxObsticalMinutes.Location = new System.Drawing.Point(18, 141);
+            this.textBoxObsticalMinutes.Name = "textBoxObsticalMinutes";
+            this.textBoxObsticalMinutes.Size = new System.Drawing.Size(130, 20);
+            this.textBoxObsticalMinutes.TabIndex = 8;
+            this.textBoxObsticalMinutes.Text = "30";
+            // 
             // FormOptions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(371, 185);
+            this.ClientSize = new System.Drawing.Size(371, 209);
+            this.Controls.Add(this.textBoxObsticalMinutes);
             this.Controls.Add(this.labelsent);
             this.Controls.Add(this.checkBoxDebugMode);
             this.Controls.Add(this.label2);
@@ -146,5 +156,6 @@ namespace PDF2ExcelVsto
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.CheckBox checkBoxDebugMode;
         private System.Windows.Forms.Label labelsent;
+        private System.Windows.Forms.TextBox textBoxObsticalMinutes;
     }
 }
