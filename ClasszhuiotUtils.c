@@ -998,6 +998,10 @@ namespace PDF2ExcelVsto
             {
                 retVal = 4;
             }
+            else if (ClassUtils.isMatchSequenceStright(rawValue, iv, "תיקון", "בעלות", "לאחר", "הסדר"))
+            {
+                retVal = 4;
+            }
             else if (ClassUtils.isMatchSequenceStright(rawValue, iv, "רישום", "בעלות", "לאחר", "הסדר"))
             {
                 retVal = 4;

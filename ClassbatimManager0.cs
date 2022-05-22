@@ -816,9 +816,30 @@ namespace PDF2ExcelVsto
                                     }
                                     if (ClassUtils.isArrayIncludString(temp, "דרגה:") > -1)
                                     {
-                                        mort.grade = temp[temp.Count - 1];
-                                        batim.tatHelkot[i].mortgageTatHelkas.Add(mort);
+                                        mort.grade = temp[1];
                                     }
+                                    int pos = ClassUtils.isArrayIncludString(temp, "הערות:");
+                                    if (pos > -1) 
+                                    {
+                                        for ( int k = 3; k < temp.Count ; k++)
+                                        {
+                                            mort.mortRemarks.Add(temp[k] + " ");
+                                            
+                                        }
+                                        currentRow++;
+                                        while (currentRow < lastRow.Value)
+                                        {                                            
+                                            List<string> temp1 = new List<string>(slExcelData.DataRows[currentRow]);
+                                            temp1 = ClassUtils.reverseOrder(temp1);
+                                            for (int k = 0; k < temp1.Count; k++)
+                                            {
+                                                mort.mortRemarks.Add(temp1[k] + " ");
+                                            }
+                                            currentRow++;
+                                        }
+                                    }
+                                    batim.tatHelkot[i].mortgageTatHelkas.Add(mort);
+                                    
                                     currentRow++;
                                 }
                             } while (currentRow < lastRow.Value);

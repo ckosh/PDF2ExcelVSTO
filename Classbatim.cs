@@ -131,6 +131,7 @@ namespace PDF2ExcelVsto
             public string part;
             public string shtar;
             public string grade;
+            public List<string> mortRemarks; 
 
             public MortgageTatHelka()
             {
@@ -142,6 +143,7 @@ namespace PDF2ExcelVsto
                 part = "";
                 shtar = "";
                 grade = "";
+                mortRemarks = new List<string>();
             }
         };
         public class TatHelka
