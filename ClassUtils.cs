@@ -793,6 +793,12 @@ namespace PDF2ExcelVsto
                     sss = temp[iv] + " " + temp[iv + 1] + " " + temp[iv + 2] + " " + temp[iv + 3];
                     result.Add(sss, 4);
                 }
+                else if (ClassUtils.isMatchSequenceNormal(temp, iv, "ירושה", "על", "פי", "הסכם"))
+                {
+                    sss = temp[iv] + " " + temp[iv + 1] + " " + temp[iv + 2] + " " + temp[iv + 3];
+                    result.Add(sss, 4);
+                }
+
                 else if (ClassUtils.isMatchSequenceNormal(temp, iv, "עדכון", "פרטי", "זיהוי"))
                 {
                     sss = temp[iv] + " " + temp[iv + 1] + " " + temp[iv + 2];

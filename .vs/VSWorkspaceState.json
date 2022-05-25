@@ -1,7 +1,8 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Resources"
   ],
-  "SelectedNode": "\\ClassExcelOperations.cs",
+  "SelectedNode": "\\ClassBatch.cs",
   "PreviewInSolutionExplorer": false
 }

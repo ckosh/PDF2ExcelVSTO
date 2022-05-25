@@ -152,7 +152,7 @@ namespace PDF2ExcelVsto
                     if (firstRow) excelOperations.PutValueInSheetRowColumn(ClassExcelOperations.Sheets.BatimMortgage, currentrow, 1, batim.header.gush);
                     if (firstRow) excelOperations.PutValueInSheetRowColumn(ClassExcelOperations.Sheets.BatimMortgage, currentrow, 2, batim.header.helka);
                     excelOperations.PutValueInSheetRowColumn(ClassExcelOperations.Sheets.BatimMortgage, currentrow, 3, batim.tatHelkot[i].number.ToString());
-                    if (firstRow) excelOperations.PutValueInSheetRowColumn(ClassExcelOperations.Sheets.BatimMortgage, currentrow, 11, batim.PDFFileName);
+                    if (firstRow) excelOperations.PutValueInSheetRowColumn(ClassExcelOperations.Sheets.BatimMortgage, currentrow, 12, batim.PDFFileName);
                     firstRow = false;
                     for (int j = 0; j < batim.tatHelkot[i].mortgageTatHelkas.Count; j++)
                     {
@@ -164,12 +164,21 @@ namespace PDF2ExcelVsto
                         excelOperations.PutValueInSheetRowColumn(ClassExcelOperations.Sheets.BatimMortgage, currentrow, 8, mort.part);
                         excelOperations.PutValueInSheetRowColumn(ClassExcelOperations.Sheets.BatimMortgage, currentrow, 9, mort.shtar);
                         excelOperations.PutValueInSheetRowColumn(ClassExcelOperations.Sheets.BatimMortgage, currentrow, 10, mort.grade);
+                        if ( mort.mortRemarks.Count > 0)
+                        {
+                            for ( int k = 0; k < mort.mortRemarks.Count; k++)
+                            {
+                                excelOperations.PutValueInSheetRowColumn(ClassExcelOperations.Sheets.BatimMortgage, currentrow, 11, mort.mortRemarks[k]);
+                                currentrow++;
+                            }
+                            currentrow--;
+                        }
                         currentrow++;
                     }
-                    excelOperations.setBoarder(ClassExcelOperations.Sheets.BatimMortgage, startrow, currentrow - 1, 1, 11, 2);
-                    excelOperations.addNameRange(ClassExcelOperations.Sheets.BatimMortgage, startrow, currentrow - 1, 1, 11, Convert.ToInt32(batim.header.gush),Convert.ToInt32(batim.header.helka), Convert.ToInt32(batim.tatHelkot[i].number),"BM");
+                    excelOperations.setBoarder(ClassExcelOperations.Sheets.BatimMortgage, startrow, currentrow - 1, 1, 12, 2);
+                    excelOperations.addNameRange(ClassExcelOperations.Sheets.BatimMortgage, startrow, currentrow - 1, 1, 12, Convert.ToInt32(batim.header.gush),Convert.ToInt32(batim.header.helka), Convert.ToInt32(batim.tatHelkot[i].number),"BM");
                 }
-                excelOperations.setBoarder(ClassExcelOperations.Sheets.BatimMortgage, startrowFile, currentrow - 1, 1, 11, 1);
+                excelOperations.setBoarder(ClassExcelOperations.Sheets.BatimMortgage, startrowFile, currentrow - 1, 1, 12, 1);
             }
             excelOperations.setSheetCellWrapText(ClassExcelOperations.Sheets.BatimMortgage, false, 11, currentrow, 2);
         }
@@ -821,20 +830,23 @@ namespace PDF2ExcelVsto
                                     int pos = ClassUtils.isArrayIncludString(temp, "הערות:");
                                     if (pos > -1) 
                                     {
+                                        String ttt = "";
                                         for ( int k = 3; k < temp.Count ; k++)
                                         {
-                                            mort.mortRemarks.Add(temp[k] + " ");
-                                            
+                                            ttt = ttt + temp[k] + " ";                                         
                                         }
-                                        currentRow++;
+                                        mort.mortRemarks.Add(ttt);
+                                        currentRow++;                                       
                                         while (currentRow < lastRow.Value)
-                                        {                                            
+                                        {
+                                            ttt = "";
                                             List<string> temp1 = new List<string>(slExcelData.DataRows[currentRow]);
                                             temp1 = ClassUtils.reverseOrder(temp1);
                                             for (int k = 0; k < temp1.Count; k++)
                                             {
-                                                mort.mortRemarks.Add(temp1[k] + " ");
+                                                ttt = ttt +  temp1[k] + " "  ;
                                             }
+                                            mort.mortRemarks.Add(ttt);
                                             currentRow++;
                                         }
                                     }

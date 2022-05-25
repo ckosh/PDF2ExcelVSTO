@@ -15,10 +15,12 @@ namespace PDF2ExcelVsto
         ClasszhuiotManager zuiotManager;
         ClassbatimManager0 batimManager;
         bool DebugMode;
+        int customerType;
 
-        public ClassBatchProcessFiles(string[] sarray, bool debugMode, string tempFolder, bool batchMode)
+        public ClassBatchProcessFiles(string[] sarray, bool debugMode, string tempFolder, bool batchMode, int custType)
         {
             DebugMode = debugMode;
+            customerType = custType;
             if (excelOperations != null)
             {
                 excelOperations.deleteAllPages();
@@ -74,11 +76,44 @@ namespace PDF2ExcelVsto
             excelOperations.deleteSheet(ClassExcelOperations.Sheets.Owner);
             zuiotManager.CreateOwnersTable();
 
+            if (customerType > 80)
+            {
+                ClassJoinSplitManager joinSplitManager;
+                joinSplitManager = new ClassJoinSplitManager(fileHandler, excelOperations, batimManager, zuiotManager);
+                excelOperations.deleteSheet(ClassExcelOperations.Sheets.JoinSplit);
+                joinSplitManager.CreateJoinSplitTable();
+            }
 
             resultfile = fileHandler.PDFfolder + "\\Tabu_results_" + DateTime.Now.ToString("yyyyMMddHHmmss");
             excelOperations.SaveResultExcel(resultfile);
             resultfile = resultfile + ".xlsx";
             return resultfile;
+        }
+
+        public int getTotalNumberOfOwners()
+        {
+            int ret = 0;
+            if ( batimManager.allBatim.Count > 0)
+            {
+                foreach (Classbatim batim in batimManager.allBatim)
+                {
+                    for ( int i = 0; i < batim.tatHelkot.Count; i++)
+                    {
+                        ret = ret + batim.tatHelkot[i].owners.Count;
+                    }
+                }
+            }
+            if ( zuiotManager.allTaboo.Count > 0)
+            {
+                if (zuiotManager.allTaboo.Count > 0)
+                {
+                    foreach (ClassTaboo taboo in zuiotManager.allTaboo)
+                    {
+                        ret = ret + taboo.zhuiotOwners.Count;
+                    }
+                }
+            }
+            return ret;
         }
     }
 }

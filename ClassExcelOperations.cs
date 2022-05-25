@@ -591,7 +591,7 @@ namespace PDF2ExcelVsto
         public int BuildBatimMortgageHeader()
         {
             int rowNumber = 3;
-            HeadTitle(xlBatimMortgageSheet, "משכנתאות - בתים משותפים", 1, 1, 11, XlHAlign.xlHAlignCenter, XlVAlign.xlVAlignCenter, 12, true, System.Drawing.Color.Aqua, 40, true, XlBorderWeight.xlMedium);
+            HeadTitle(xlBatimMortgageSheet, "משכנתאות - בתים משותפים", 1, 1, 12, XlHAlign.xlHAlignCenter, XlVAlign.xlVAlignCenter, 12, true, System.Drawing.Color.Aqua, 40, true, XlBorderWeight.xlMedium);
 
             HeadTitle(xlBatimMortgageSheet, "גוש", 2, 1, 1, XlHAlign.xlHAlignCenter, XlVAlign.xlVAlignCenter, 11, true, System.Drawing.Color.Aqua, 20, true, XlBorderWeight.xlMedium);
             HeadTitle(xlBatimMortgageSheet, "חלקה", 2, 2, 2, XlHAlign.xlHAlignCenter, XlVAlign.xlVAlignCenter, 11, true, System.Drawing.Color.Aqua, 20, true, XlBorderWeight.xlMedium);
@@ -603,7 +603,8 @@ namespace PDF2ExcelVsto
             HeadTitle(xlBatimMortgageSheet, "חלק", 2, 8, 8, XlHAlign.xlHAlignCenter, XlVAlign.xlVAlignCenter, 11, true, System.Drawing.Color.Aqua, 20, true, XlBorderWeight.xlMedium);
             HeadTitle(xlBatimMortgageSheet, "שטר", 2, 9, 9, XlHAlign.xlHAlignCenter, XlVAlign.xlVAlignCenter, 11, true, System.Drawing.Color.Aqua, 20, true, XlBorderWeight.xlMedium);
             HeadTitle(xlBatimMortgageSheet, "דרגה", 2, 10, 10, XlHAlign.xlHAlignCenter, XlVAlign.xlVAlignCenter, 11, true, System.Drawing.Color.Aqua, 20, true, XlBorderWeight.xlMedium);
-            HeadTitle(xlBatimMortgageSheet, "קובץ", 2, 11, 11, XlHAlign.xlHAlignCenter, XlVAlign.xlVAlignCenter, 11, true, System.Drawing.Color.Aqua, 20, true, XlBorderWeight.xlMedium);
+            HeadTitle(xlBatimMortgageSheet, "הערות", 2, 11, 11, XlHAlign.xlHAlignCenter, XlVAlign.xlVAlignCenter, 11, true, System.Drawing.Color.Aqua, 20, true, XlBorderWeight.xlMedium);
+            HeadTitle(xlBatimMortgageSheet, "קובץ", 2, 12, 12, XlHAlign.xlHAlignCenter, XlVAlign.xlVAlignCenter, 11, true, System.Drawing.Color.Aqua, 20, true, XlBorderWeight.xlMedium);
             return rowNumber;
         }
         public int BuildBatimAttachmentsHeader()
