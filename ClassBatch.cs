@@ -602,7 +602,10 @@ namespace PDF2ExcelVsto
                 }
             }
             return bret;
-
+        }
+        public int getNumberOfOwners()
+        {
+            return numberOfOwners;
         }
     }
 }

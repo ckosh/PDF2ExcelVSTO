@@ -54,8 +54,14 @@ namespace PDF2ExcelVsto
                     {
                         int firstMail = 1;
                         int count = batchClass.ActMailJob(firstMail, tempFolder, debugMode, obsticalMinutes);
-                        count = count + Int32.Parse(labelsent.Text);
+                        count = count + Int32.Parse(labelsent.Text);                        
                         labelsent.Text = count.ToString();
+                        labelsent.Refresh();
+
+                        int owners = batchClass.getNumberOfOwners();
+                        owners = owners + Int32.Parse(labelowners.Text);
+                        labelowners.Text = owners.ToString();
+                        labelowners.Refresh();
                     }
                 }
                 catch (Exception ee)
@@ -104,6 +110,11 @@ namespace PDF2ExcelVsto
         }
 
         private void textBoxDelay_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label5_Click(object sender, EventArgs e)
         {
 
         }

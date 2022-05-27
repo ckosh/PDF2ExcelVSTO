@@ -179,6 +179,10 @@ namespace PDF2ExcelVsto
                                         NesachType = "בתים משותפים";
                                         batimCSV.Add(fulCSVName);
                                     }
+                                    else
+                                    {
+                                        throw new Exception("(לא נתמך (פנקס השטרות");
+                                    }
                                 }
                             }
                             if (Gush == "" || Helka == "")

@@ -25,7 +25,7 @@
 		</group>
         <group id="setup" label="אופציות">
 		  <button id="JoinSplit" onAction="JoinSplit_Click" label="איחוד וחלוקה" size="large" getImage="get_JoinSplit_icon"/>
-		  <button id="setup1" onAction="setup_Click" label="אופציות" size="large" getImage="get_option_icon"/>
+		  <button id="setup1" onAction="setup_Click" label="סרבר" size="large" getImage="get_option_icon"/>
 		</group>
       </tab>
     </tabs>
