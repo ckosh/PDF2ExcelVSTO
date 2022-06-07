@@ -984,7 +984,12 @@ namespace PDF2ExcelVsto
             cont0 = "";
             if (ClassUtils.isMatchSequenceStright(rawValue, iv, "העברת", "שכירות", "בירושה", "עפ\"י", "הסכם"))
             {
-                retVal = 6;
+                retVal = 5;
+            }
+            if (ClassUtils.isMatchSequenceStright(rawValue, iv, "מכר", "לפי", "סעיף", "5", "לחוק"))
+            {
+                retVal = 5;
+                cont0 = "שיכונים ציבוריים";
             }
             else if (ClassUtils.isMatchSequenceStright(rawValue, iv, "העברת", "שכירות", "ללא", "תמורה"))
             {
@@ -1399,7 +1404,5 @@ namespace PDF2ExcelVsto
             }
             return ret;
         }
-
-
     }
 }

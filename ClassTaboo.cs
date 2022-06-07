@@ -321,6 +321,8 @@ namespace PDF2ExcelVsto
           
             for (int i = 0; i < OwnersRows.Count; i++)
             {
+                int ownerPartRow = 0;
+                ownerPartRow = getOwnerPart(OwnersRows[i], sec[1]);
                 string cont0 = "";
                 if (i == 63)
                 {
@@ -329,9 +331,7 @@ namespace PDF2ExcelVsto
                 ZhuiotOwner zhuiotOwner = new ZhuiotOwner();
                 l1 = ClasszhuiotUtils.rawlineToKeyPropOwners(slExcelData.DataRows[OwnersRows[i]]);
                 l2 = ClasszhuiotUtils.rawlineToValuesPropOwners0(l1, slExcelData.DataRows[OwnersRows[i] + 1], ref cont0);
-//                l2 = ClassUtils.rawlineToValuesLeasing0(l1, slExcelData.DataRows[OwnersRows[i] + 1]);
-//                l2.Reverse();
-                //                l2 = ClassUtils.rawlineToValuesPropOwners(slExcelData.DataRows[OwnersRows[i] + 1]);
+
                 if (l1.Count == l2.Count)
                 {
                     for (int k = 0; k < l1.Count; k++)
@@ -366,30 +366,48 @@ namespace PDF2ExcelVsto
                             zhuiotOwner.idNumber = l2[k];
                         }
                     }
-                    if (!ClassUtils.isArrayIncludeAllStringsParam(slExcelData.DataRows[OwnersRows[i] + 2], "החלק", "בנכס") && cont0 == "")
+
+                    /// extruct extra owner name
+                    /// 
+                    for ( int k = OwnersRows[i] + 2; k < ownerPartRow; k++)
                     {
-                        List<string> sss = new List<string>(slExcelData.DataRows[OwnersRows[i] + 2]);
-                        if (sss[sss.Count - 1] == "לשכת" && sss[sss.Count - 2] == "פרצלציה") // remove from line
+                        l1 = slExcelData.DataRows[k];
+                        int pos0 = ClassUtils.isArrayIncludString(l1, "פרצלציה");
+                        if (pos0 > -1) l1.RemoveAt(pos0);
+                        pos0 = ClassUtils.isArrayIncludString(l1, "לשכת");
+                        if (pos0 > -1) l1.RemoveAt(pos0);
+
+                        if ( cont0 != "")
                         {
-                            sss.RemoveAt(sss.Count - 1);
-                            sss.RemoveAt(sss.Count - 1);
+                            List<string> ss1 = cont0.Split(' ').ToList();
+                            ss1.Reverse();
+                            for ( int j = 0 ; j < ss1.Count  ; j++)
+                            {
+                                pos0 = ClassUtils.isArrayIncludString(l1, ss1[j]);
+                                if (pos0 > -1) l1.RemoveAt(pos0);
+                            }
+                            cont0 = "";
                         }
-                        zhuiotOwner.ownerName =   zhuiotOwner.ownerName +" " + ClassUtils.buildReverseCombinedLine(sss) ;
-                        zhuiotOwner.ownerPart = ClassUtils.buildReverseCombinedLine(slExcelData.DataRows[OwnersRows[i] + 4]);
-                    }
-                    else if ( cont0 != "")
-                    {
-                        zhuiotOwner.ownerPart = ClassUtils.buildReverseCombinedLine(slExcelData.DataRows[OwnersRows[i] + 4]);
-                    }
-                    else
-                    {
-                        zhuiotOwner.ownerPart = ClassUtils.buildReverseCombinedLine(slExcelData.DataRows[OwnersRows[i] + 3]);
-                        string fff = ClassUtils.buildReverseCombinedLine(slExcelData.DataRows[OwnersRows[i] + 4]);
-                        if (fff.All(Char.IsDigit))
+                        if ( l1.Count > 0) // rest is owner name 
                         {
-                            zhuiotOwner.ownerPart = zhuiotOwner.ownerPart + " " + fff;
+                            l1.Reverse();
+                            for ( int j = 0; j < l1.Count ; j++)
+                            {
+                                zhuiotOwner.ownerName = zhuiotOwner.ownerName + " " + l1[j];
+                            }
                         }
-                     }
+                    }
+                    
+                    string fff = ClassUtils.buildReverseCombinedLine(slExcelData.DataRows[ownerPartRow + 1]);
+                    zhuiotOwner.ownerPart = fff;
+                    int index1 = fff.IndexOf('/');
+                    if ( index1+1 == fff.Length)
+                    {
+                        fff = ClassUtils.buildReverseCombinedLine(slExcelData.DataRows[ownerPartRow + 2]);
+                        zhuiotOwner.ownerPart = zhuiotOwner.ownerPart + " " + fff;
+                    }
+
+
                 }
                 zhuiotOwners.Add(zhuiotOwner);
             }
@@ -878,6 +896,21 @@ namespace PDF2ExcelVsto
                 leasings.Add(leasing);
             }
         }
+        public int getOwnerPart(int rownumber, int lastrow)
+        {
+            int retValue = 0;
+            for (int i = rownumber; i < lastrow; i++)
+            {
+                if ( ClassUtils.isArrayIncludeAllStringsParam(slExcelData.DataRows[i], "החלק", "בנכס") )
+                {
+                    retValue = i;
+                    break;
+                }
+            }
+
+            return retValue;
+        }
+
 
     }
 }
