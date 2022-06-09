@@ -226,7 +226,7 @@ namespace PDF2ExcelVsto
             {
                 if (rawKey[4] == "סוג זיהוי")
                 {
-                    if (rawValue[top] == "חברה" || rawValue[top] == "ת.ז" || rawValue[top] == "דרכון")
+                    if (rawValue[top] == "חברה" || rawValue[top] == "ת.ז" || rawValue[top] == "דרכון" || rawValue[top] == "עמותה")
                     {
                         result[4] = rawValue[top];
                         markKey[4] = 0;
@@ -986,7 +986,11 @@ namespace PDF2ExcelVsto
             {
                 retVal = 5;
             }
-            if (ClassUtils.isMatchSequenceStright(rawValue, iv, "מכר", "לפי", "סעיף", "5", "לחוק"))
+            else if (ClassUtils.isMatchSequenceStright(rawValue, iv, "מכר", "לפי", "צו", "בית", "משפט"))
+            {
+                retVal = 5;
+            }
+            else if (ClassUtils.isMatchSequenceStright(rawValue, iv, "מכר", "לפי", "סעיף", "5", "לחוק"))
             {
                 retVal = 5;
                 cont0 = "שיכונים ציבוריים";
@@ -1016,6 +1020,10 @@ namespace PDF2ExcelVsto
                 retVal = 4;
                 cont0 = "מקרקעין 1953";
             }
+            else if (ClassUtils.isMatchSequenceStright(rawValue, iv, "הפקעה", "לפי", "סעיף", "19"))
+            {
+                retVal = 4;
+            }
             else if (ClassUtils.isMatchSequenceStright(rawValue, iv, "העברת", "שכירות", "בירושה"))
             {
                 retVal = 3;
@@ -1044,6 +1052,11 @@ namespace PDF2ExcelVsto
             {
                 retVal = 3;
             }
+            else if (ClassUtils.isMatchSequenceStright(rawValue, iv, "העברה", "מגוש", "לגוש"))
+            {
+                retVal = 3;
+            }
+
             else if (ClassUtils.isMatchSequenceStright(rawValue, iv, "התאמת", "רישום"))
             {
                 retVal = 2;
