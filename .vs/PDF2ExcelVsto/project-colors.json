@@ -1,0 +1,21 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "61a98d7d-0dca-4be3-ba5e-9cc877e66b51": {
+      "ProjectGuid": "61a98d7d-0dca-4be3-ba5e-9cc877e66b51",
+      "DisplayName": "PDF2ExcelVsto",
+      "ColorIndex": 0
+    },
+    "328eaa31-8b42-4987-8223-2a574086c5f0": {
+      "ProjectGuid": "328eaa31-8b42-4987-8223-2a574086c5f0",
+      "DisplayName": "GrabNadlanLicense",
+      "ColorIndex": 1
+    },
+    "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
+      "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
+      "DisplayName": "Miscellaneous Files",
+      "ColorIndex": -1
+    }
+  },
+  "NextColorIndex": 2
+}

@@ -36,7 +36,7 @@
     <PublishUrl>C:\Users\user\source\repos_vs22\PDF2ExcelVsto\publish\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.0.0.41</ApplicationVersion>
+    <ApplicationVersion>1.0.0.42</ApplicationVersion>
     <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>

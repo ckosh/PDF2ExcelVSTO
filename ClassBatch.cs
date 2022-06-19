@@ -26,6 +26,7 @@ namespace PDF2ExcelVsto
         public string customerMail;
         public int NumberOfPDFFiles;
         public int numberOfOwners;
+        public List<int> listofOwners = new List<int>();
         public string TempFolder;
 
         public Pop3Client objPop3Client;
@@ -206,17 +207,21 @@ namespace PDF2ExcelVsto
             //}
             ClassBatchProcessFiles processFiles = new ClassBatchProcessFiles(PdfFileNames,DebugMode, TempFolder, batchMode, customertype);
             resultExcelFile = processFiles.convert();
-            numberOfOwners = processFiles.getTotalNumberOfOwners();
+            listofOwners = processFiles.getTotalNumberOfOwners();
+            numberOfOwners = listofOwners.Sum();
+            double totalcost = getTotalCost(NumberOfPDFFiles, listofOwners);
+
             string sstype = "";
-            if (customertype < 80)
-            {
-                sstype = "המרת נסחים";
-            }
-            else if (customertype > 80)
-            {
-                sstype = "המרה והכנת טבלת מצב נכנס";
-            }
-            string body = NumberOfPDFFiles.ToString() + " מספר נסחים " + '\n' +  numberOfOwners.ToString() + " מספר בעלים " + '\n' + sstype ;
+            sstype = "המרת נסחים - בניית טבלת מצב נכנס";
+            //if (customertype < 80)
+            //{
+            //    sstype = "המרת נסחים";
+            //}
+            //else if (customertype > 80)
+            //{
+            //    sstype = "המרה והכנת טבלת מצב נכנס";
+            //}
+            string body = totalcost.ToString() + " עלות הסבה" + '\n' + NumberOfPDFFiles.ToString() + " מספר נסחים " + '\n' +  numberOfOwners.ToString() + " מספר בעלים " + '\n' + sstype ;
             sendMail(customerMail, "תוצאות הסבת נסחי טאבו", resultExcelFile, body);
             deleteAllFilesFromDirectory(TempFolder);
             deleteAllFilesFromDirectory(TempFolder+"\\CSV");
@@ -224,7 +229,7 @@ namespace PDF2ExcelVsto
             messageTime.Clear();
             if (customertype < 99)
             {
-                savecBillingData(customerMail, NumberOfPDFFiles, resultExcelFile, numberOfOwners);
+                savecBillingData(customerMail, NumberOfPDFFiles, resultExcelFile, numberOfOwners, totalcost);
             }            
             return NumberOfPDFFiles;
         }
@@ -359,10 +364,10 @@ namespace PDF2ExcelVsto
             return ret;
         }
 
-        public void savecBillingData( string e_mail, int numberOfFiles, string excelFileName, int numOfOwners)
+        public void savecBillingData( string e_mail, int numberOfFiles, string excelFileName, int numOfOwners , double totalCost)
         {
             Vba2VSTO vba2VSTO = new Vba2VSTO();
-            vba2VSTO.SaveBillingData(e_mail, numberOfFiles, excelFileName, numberOfOwners);
+            vba2VSTO.SaveBillingData(e_mail, numberOfFiles, excelFileName, numberOfOwners , totalCost);
         }
         public void sendMail(string to, string subject, string filePath, string Body)
         {
@@ -606,6 +611,20 @@ namespace PDF2ExcelVsto
         public int getNumberOfOwners()
         {
             return numberOfOwners;
+        }
+        public double  getTotalCost(int NumberOfPDFFiles, List<int>numberOfOwners)
+        {
+            double totalCost = 0;
+            for (int i = 0;  i < NumberOfPDFFiles; i++)
+            {
+                totalCost = totalCost + 5.0;
+                if(numberOfOwners[i] > 25 )
+                {
+                    totalCost = totalCost + (numberOfOwners[i] - 25) * 0.2;
+                }
+            }
+            return totalCost;
+
         }
     }
 }

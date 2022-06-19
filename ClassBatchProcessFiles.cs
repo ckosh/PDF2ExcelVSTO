@@ -75,14 +75,21 @@ namespace PDF2ExcelVsto
 
             excelOperations.deleteSheet(ClassExcelOperations.Sheets.Owner);
             zuiotManager.CreateOwnersTable();
+            //
+            //  
+            //
+            ClassJoinSplitManager joinSplitManager;
+            joinSplitManager = new ClassJoinSplitManager(fileHandler, excelOperations, batimManager, zuiotManager);
+            excelOperations.deleteSheet(ClassExcelOperations.Sheets.JoinSplit);
+            joinSplitManager.CreateJoinSplitTable();
 
-            if (customerType > 80)
-            {
-                ClassJoinSplitManager joinSplitManager;
-                joinSplitManager = new ClassJoinSplitManager(fileHandler, excelOperations, batimManager, zuiotManager);
-                excelOperations.deleteSheet(ClassExcelOperations.Sheets.JoinSplit);
-                joinSplitManager.CreateJoinSplitTable();
-            }
+            //if (customerType > 80)
+            //{
+            //    ClassJoinSplitManager joinSplitManager;
+            //    joinSplitManager = new ClassJoinSplitManager(fileHandler, excelOperations, batimManager, zuiotManager);
+            //    excelOperations.deleteSheet(ClassExcelOperations.Sheets.JoinSplit);
+            //    joinSplitManager.CreateJoinSplitTable();
+            //}
 
             resultfile = fileHandler.PDFfolder + "\\Tabu_results_" + DateTime.Now.ToString("yyyyMMddHHmmss");
             excelOperations.SaveResultExcel(resultfile);
@@ -90,17 +97,21 @@ namespace PDF2ExcelVsto
             return resultfile;
         }
 
-        public int getTotalNumberOfOwners()
+        public List<int> getTotalNumberOfOwners()
         {
-            int ret = 0;
+            List<int> numberOfOwners = new List<int>();
+
+ 
             if ( batimManager.allBatim.Count > 0)
             {
                 foreach (Classbatim batim in batimManager.allBatim)
                 {
+                    int ret = 0;
                     for ( int i = 0; i < batim.tatHelkot.Count; i++)
                     {
                         ret = ret + batim.tatHelkot[i].owners.Count;
                     }
+                    numberOfOwners.Add(ret);
                 }
             }
             if ( zuiotManager.allTaboo.Count > 0)
@@ -109,11 +120,11 @@ namespace PDF2ExcelVsto
                 {
                     foreach (ClassTaboo taboo in zuiotManager.allTaboo)
                     {
-                        ret = ret + taboo.zhuiotOwners.Count;
+                        numberOfOwners.Add(taboo.zhuiotOwners.Count);
                     }
                 }
             }
-            return ret;
+            return numberOfOwners;
         }
     }
 }
