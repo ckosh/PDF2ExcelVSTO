@@ -475,6 +475,7 @@ namespace PDF2ExcelVsto
                     while (ClassUtils.isArrayIncludString(slExcelData.DataRows[rowNumberj], "הערות:") == -1 &&
                            ClassUtils.isArrayIncludString(slExcelData.DataRows[rowNumberj], "זיהוי") == -1 &&
                            ClassUtils.isArrayIncludString(slExcelData.DataRows[rowNumberj], "הבעלים") == -1 &&
+                           ClassUtils.isArrayIncludString(slExcelData.DataRows[rowNumberj], "החוכרים") == -1 &&
                            ClassUtils.isArrayIncludString(slExcelData.DataRows[rowNumberj], "סכום") == -1 &&
                            ClassUtils.isArrayIncludString(slExcelData.DataRows[rowNumberj], "הבעלות") == -1 &&
                            ClassUtils.isArrayIncludString(slExcelData.DataRows[rowNumberj], "החלק") == -1 &&

@@ -850,7 +850,7 @@ namespace PDF2ExcelVsto
         public int buildOwnerHeadr0()
         {
             int rowNumber = 1;
-            HeadTitle(xlOwnersSheet, "בעלויות - פנחס הזכויות", 1, 1, 11, XlHAlign.xlHAlignCenter, XlVAlign.xlVAlignCenter, 12, true, System.Drawing.Color.Aqua, 40, true, XlBorderWeight.xlMedium);
+            HeadTitle(xlOwnersSheet, "בעלויות - פנקס הזכויות", 1, 1, 11, XlHAlign.xlHAlignCenter, XlVAlign.xlVAlignCenter, 12, true, System.Drawing.Color.Aqua, 40, true, XlBorderWeight.xlMedium);
             HeadTitle(xlOwnersSheet, "לחץ על הסמן לצפיה", 1, 12, 14, XlHAlign.xlHAlignCenter, XlVAlign.xlVAlignCenter, 12, true, System.Drawing.Color.Aqua, 40, true, XlBorderWeight.xlMedium);
             HeadTitle(xlOwnersSheet, "", 1, 15, 15, XlHAlign.xlHAlignCenter, XlVAlign.xlVAlignCenter, 12, true, System.Drawing.Color.Aqua, 40, true, XlBorderWeight.xlMedium);
 

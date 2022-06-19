@@ -1073,6 +1073,10 @@ namespace PDF2ExcelVsto
             {
                 retVal = 2;
             }
+            else if (ClassUtils.isMatchSequenceStright(rawValue, iv, "שינוי", "שם"))
+            {
+                retVal = 2;
+            }
             else if (ClassUtils.isMatchSequenceStright(rawValue, iv, "צירוף", "חלקים"))
             {
                 retVal = 2;
