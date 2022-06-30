@@ -32,7 +32,9 @@ namespace PDF2ExcelVsto
         public Pop3Client objPop3Client;
         public string host;
         public string user;
+        public string userdebug;
         public string password;
+        public string passworddebug;
         public int port;
         bool useSsl;
         string[] PdfFileNames;
@@ -48,6 +50,8 @@ namespace PDF2ExcelVsto
             objPop3Client = new Pop3Client();
             host = "mail.grabnadlan.co.il";
             user = "tabu2excel@grabnadlan.co.il";
+            userdebug = "chaim.koshizky@grabnadlan.co.il";
+            passworddebug = "3O5!RvHQ6Y5q";
             password = "L#(Bcw^Wi7{7";
             port = 110;
             useSsl = false;
@@ -71,21 +75,31 @@ namespace PDF2ExcelVsto
             }
         }
 
-        public  int getNumberOfmessagesGMAIL()
+        public  int getNumberOfmessagesDebug()
         {
-            Pop3Client client = new Pop3Client();
-            client.Connect("pop.gmail.com", 995, true);
-            client.Authenticate("recent:koshizky.chaim@gmail.com", "zdr18b#!64bKlde");
-            int messageCount = client.GetMessageCount();
-            client.Disconnect();
-            return messageCount;
+            Log.Info("get number of messages ");
+            objPop3Client.Connect(host, port, useSsl);
+            objPop3Client.Authenticate(userdebug, passworddebug);
+            int j = objPop3Client.GetMessageCount();
+            objPop3Client.Disconnect();
+            Log.Info("after  getNumberOfmessages " + j.ToString());
+            return j;
+
+            //Pop3Client client = new Pop3Client();
+            //client.Connect("pop.gmail.com", 995, true);
+            //client.Authenticate("recent:koshizky.chaim@gmail.com", "zdr18b#!64bKlde");
+            //int messageCount = client.GetMessageCount();
+            //client.Disconnect();
+            //return messageCount;
         }
         public int getNumberOfmessages()
         {
+            Log.Info("get number of messages " );
             objPop3Client.Connect(host, port, useSsl);
             objPop3Client.Authenticate(user, password);
             int j = objPop3Client.GetMessageCount();
             objPop3Client.Disconnect();
+            Log.Info("after  getNumberOfmessages " + j.ToString() );
             return j;
         }
         public int ActMailJob(int mailCount, string tempFolder, bool debugMode, int obsticalMinutes)
@@ -94,19 +108,12 @@ namespace PDF2ExcelVsto
             TempFolder = tempFolder;
             DebugMode = debugMode;
             MessageModel message = new MessageModel();
-            if ( DebugMode)
-            {
-                message = GetEmailContentGmail(mailCount);
-            }
-            else
-            {
-                message = GetEmailContent(mailCount);
-            }
+            message = GetEmailContent(mailCount, DebugMode);
 
             if ( !removeObstical(message, obsticalMinutes) ) //  over 30 minutes in que - remove
             {
-                deleteMail(mailCount);
-                string sub = "ארעה שגיעה בניתוח הנסחים - שלח את הקבצים שנית ל - grabnadlan@gmail.com";
+                deleteMail(mailCount, DebugMode);
+                string sub = "ארעה שגיאה בניתוח הנסחים - שלח את הקבצים שנית ל - grabnadlan@gmail.com";
                 sendMail(message.FromID.ToLower(), sub, null, sub);
                 return 0;
 
@@ -160,7 +167,7 @@ namespace PDF2ExcelVsto
                         ConfirmationMailSimple("grabnadlan@gmail.com", "שגיאת כתובת מייל", mail);
                     }
                  }
-                deleteMail(mailCount);
+                deleteMail(mailCount, DebugMode);
                 return 0;
             }
             customerMail = message.FromID.ToLower();
@@ -171,7 +178,7 @@ namespace PDF2ExcelVsto
                 ///  delete mail 
                 string sub = "משתמש אינו רשום במערכת";
                 sendMail(customerMail, sub, null, sub);
-                deleteMail(mailCount);
+                deleteMail(mailCount  , DebugMode);
                 deleteAllFilesFromDirectory(TempFolder);
                 return 0;
             }
@@ -181,7 +188,7 @@ namespace PDF2ExcelVsto
                 ///  delete mail 
                 string sub = "משתמש אינו מאושר לשימוש";
                 sendMail(customerMail, sub, null, sub);
-                deleteMail(mailCount);
+                deleteMail(mailCount, DebugMode);
                 deleteAllFilesFromDirectory(TempFolder);
                 return 0;
             }
@@ -195,7 +202,7 @@ namespace PDF2ExcelVsto
             {
                 string sub = "!מייל לא מכיל נסחים";
                 sendMail(customerMail, sub, null, sub);
-                deleteMail(mailCount);
+                deleteMail(mailCount, DebugMode);
                 return 0;
             }
             //if (!AllPDFFiles(PdfFileNames))
@@ -205,8 +212,12 @@ namespace PDF2ExcelVsto
             //    deleteMail(mailCount);
             //    return 0;
             //}
+            Log.Info("before process files  ");
+
             ClassBatchProcessFiles processFiles = new ClassBatchProcessFiles(PdfFileNames,DebugMode, TempFolder, batchMode, customertype);
+            Log.Info("after process files  ");
             resultExcelFile = processFiles.convert();
+            Log.Info("after convert files  ");
             listofOwners = processFiles.getTotalNumberOfOwners();
             numberOfOwners = listofOwners.Sum();
             double totalcost = getTotalCost(NumberOfPDFFiles, listofOwners);
@@ -225,7 +236,7 @@ namespace PDF2ExcelVsto
             sendMail(customerMail, "תוצאות הסבת נסחי טאבו", resultExcelFile, body);
             deleteAllFilesFromDirectory(TempFolder);
             deleteAllFilesFromDirectory(TempFolder+"\\CSV");
-            deleteMail(mailCount);
+            deleteMail(mailCount , DebugMode);
             messageTime.Clear();
             if (customertype < 99)
             {
@@ -285,10 +296,22 @@ namespace PDF2ExcelVsto
             client.Disconnect();
             return message;
         }
-        public MessageModel GetEmailContent(int intMessageNumber)
+        public MessageModel GetEmailContent(int intMessageNumber, bool debug )
         {
             objPop3Client.Connect(host, port, useSsl);
-            objPop3Client.Authenticate(user, password);
+            string localUser = "";
+            string localPassword = "";
+            if ( debug )
+            {
+                localUser = userdebug;
+                localPassword = passworddebug;
+            }
+            else
+            {
+                localUser = user;
+                localPassword = password;
+            }
+            objPop3Client.Authenticate(localUser, localPassword);
 
             MessageModel message = new MessageModel();
             OpenPop.Mime.Message objMessage;
@@ -511,10 +534,22 @@ namespace PDF2ExcelVsto
             message.Dispose();
             client.Dispose();
         }
-        public void deleteMail(int j)
+        public void deleteMail(int j, bool debug)
         {
+            string localUser = "";
+            string localPassword = "";
+            if (debug)
+            {
+                localUser = userdebug;
+                localPassword = passworddebug;
+            }
+            else
+            {
+                localUser = user;
+                localPassword = password;
+            }
             objPop3Client.Connect(host, port, useSsl);
-            objPop3Client.Authenticate(user, password);
+            objPop3Client.Authenticate(localUser, localPassword);
             objPop3Client.DeleteMessage(j);
             objPop3Client.Disconnect();
         }

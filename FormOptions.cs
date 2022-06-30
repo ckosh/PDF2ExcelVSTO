@@ -44,7 +44,8 @@ namespace PDF2ExcelVsto
                     int mailcount;
                     if (debugMode)
                     {
-                        mailcount = batchClass.getNumberOfmessagesGMAIL();
+                        mailcount = batchClass.getNumberOfmessagesDebug();
+                        // 3O5!RvHQ6Y5q
                     }
                     else
                     {
@@ -66,8 +67,7 @@ namespace PDF2ExcelVsto
                 }
                 catch (Exception ee)
                 {
-                    Log.Error("exception encountered");
-                    Console.WriteLine(ee.ToString());
+                    Log.Info("exception while main try " + ee.ToString());
                 }
                 Thread.Sleep(interval);
             }
@@ -82,7 +82,7 @@ namespace PDF2ExcelVsto
             
             string to = "chaim.koshizky@gmail.com";
             MailMessage message = new MailMessage(user, to);
-            message.Subject = "testc image";
+            message.Subject = "test image";
             message.IsBodyHtml = true;
             ResourceManager rm = Resources.ResourceManager;
             Bitmap myImage = (Bitmap)rm.GetObject("registrationReply");
@@ -101,7 +101,6 @@ namespace PDF2ExcelVsto
             client.Send(message);
             message.Dispose();
             client.Dispose();
-
         }
 
         private void FormOptions_Load(object sender, EventArgs e)
