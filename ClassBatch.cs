@@ -220,7 +220,7 @@ namespace PDF2ExcelVsto
             Log.Info("after convert files  ");
             listofOwners = processFiles.getTotalNumberOfOwners();
             numberOfOwners = listofOwners.Sum();
-            double totalcost = getTotalCost(NumberOfPDFFiles, listofOwners);
+            double totalcost = getTotalCost(listofOwners);
 
             string sstype = "";
             sstype = "המרת נסחים - בניית טבלת מצב נכנס";
@@ -647,17 +647,28 @@ namespace PDF2ExcelVsto
         {
             return numberOfOwners;
         }
-        public double  getTotalCost(int NumberOfPDFFiles, List<int>numberOfOwners)
+        public double  getTotalCost( List<int>numberOfOwners)
         {
             double totalCost = 0;
-            for (int i = 0;  i < NumberOfPDFFiles; i++)
+            double costByOwners = 0.0;
+            double costByFiles = 0.0;
+            int sumOfOwners = 0;
+            for ( int j = 0; j < numberOfOwners.Count ; j++)
             {
-                totalCost = totalCost + 5.0;
-                if(numberOfOwners[i] > 25 )
-                {
-                    totalCost = totalCost + (numberOfOwners[i] - 25) * 0.2;
-                }
+                sumOfOwners = sumOfOwners + numberOfOwners[j];
             }
+            costByOwners = sumOfOwners * 0.2;
+            costByFiles = numberOfOwners.Count * 5.0;
+            totalCost = Math.Max (costByFiles, costByOwners);
+
+            //for (int i = 0;  i < numberOfOwners.Count; i++)
+            //{
+            //    totalCost = totalCost + 5.0;
+            //    if(numberOfOwners[i] > 25 )
+            //    {
+            //        totalCost = totalCost + (numberOfOwners[i] - 25) * 0.2;
+            //    }
+            //}
             return totalCost;
 
         }

@@ -61,7 +61,7 @@ namespace PDF2ExcelVsto
 
         public ClassExcelOperations(bool bmode)
         {
-            if ( bmode )
+            if (bmode)
             {
                 xlApp = new Excel.Application();
                 xlApp.Visible = true;
@@ -90,19 +90,19 @@ namespace PDF2ExcelVsto
             BatchMode = bmode;
             xlApp.ErrorCheckingOptions.BackgroundChecking = false;
             xlApp.DisplayAlerts = false;
-            xlWorkBook = (Excel.Workbook) xlApp.ActiveWorkbook;
+            xlWorkBook = (Excel.Workbook)xlApp.ActiveWorkbook;
             if (xlWorkBook == null)
             {
                 xlWorkBook = xlApp.Workbooks.Add();
             }
             else
             {
-//                deleteAllPages();
-//                deleteAllSheets();
+                //                deleteAllPages();
+                //                deleteAllSheets();
 
             }
-//            xlFilesWorkSheet = xlWorkBook.Worksheets.Item[1];
-            excelSheet = xlApp.ActiveSheet as Excel.Worksheet  ;
+            //            xlFilesWorkSheet = xlWorkBook.Worksheets.Item[1];
+            excelSheet = xlApp.ActiveSheet as Excel.Worksheet;
 
             //            xlApp = (Excel.Application)Marshal.GetActiveObject("Excel.Application");
             //            xlWorkBook = xlApp.ActiveWorkbook;
@@ -121,7 +121,7 @@ namespace PDF2ExcelVsto
         public void DeleteSheetByName(string name)
         {
             xlApp.DisplayAlerts = false;
-            for ( int i = xlApp.ActiveWorkbook.Worksheets.Count; i > 0; i--)
+            for (int i = xlApp.ActiveWorkbook.Worksheets.Count; i > 0; i--)
             {
                 Worksheet wkSheet = (Worksheet)xlApp.ActiveWorkbook.Worksheets[i];
                 if (wkSheet.Name == name)
@@ -131,7 +131,7 @@ namespace PDF2ExcelVsto
             }
             xlApp.DisplayAlerts = true;
         }
-        public void CreateTitle(int row, int column0, int column2,  string title, double width)
+        public void CreateTitle(int row, int column0, int column2, string title, double width)
         {
             string lRow = ClassUtils.ColumnLabel(row);
             string lColumn = ClassUtils.ColumnLabel(column0);
@@ -139,9 +139,9 @@ namespace PDF2ExcelVsto
             xlFilesWorkSheet.Columns[totalCellName].ColumnWidth = width;
             xlFilesWorkSheet.Cells[row, column0].Style.HorizontalAlignment = Microsoft.Office.Interop.Excel.XlHAlign.xlHAlignCenter;
             xlFilesWorkSheet.Cells[row, column0].Value = title;
-            
+
         }
-        public void ListPdfFiles(string[]  files)
+        public void ListPdfFiles(string[] files)
         {
             CreateTitle(1, 1, 1, "שם נסח", 40.0);
             CreateTitle(1, 2, 2, "גוש", 10.0);
@@ -149,10 +149,10 @@ namespace PDF2ExcelVsto
             CreateTitle(1, 4, 4, "סוג נסח", 15.0);
             int startRow = 2;
             PDFFolder = Path.GetDirectoryName(files[0]);
-            for ( int i = 0; i < files.Length; i++)
+            for (int i = 0; i < files.Length; i++)
             {
                 string result = Path.GetFileName(files[i]);
-                xlFilesWorkSheet.Cells[i+startRow, 1].Value = result;
+                xlFilesWorkSheet.Cells[i + startRow, 1].Value = result;
             }
         }
 
@@ -222,7 +222,7 @@ namespace PDF2ExcelVsto
                     }
                     break;
                 case Sheets.BatimOwners:
-                    if ( xlBatimOwnersSheet != null)
+                    if (xlBatimOwnersSheet != null)
                     {
                         xlBatimOwnersSheet.Delete();
                     }
@@ -264,7 +264,7 @@ namespace PDF2ExcelVsto
                     }
                     break;
                 case Sheets.JoinSplit:
-                    if ( xlJoinSplitSheet != null)
+                    if (xlJoinSplitSheet != null)
                     {
                         xlJoinSplitSheet.Delete();
                     }
@@ -275,7 +275,8 @@ namespace PDF2ExcelVsto
         {
             xlApp.DisplayAlerts = false;
             DeleteSheetByName(name);
-            switch (sn) {
+            switch (sn)
+            {
                 case Sheets.Owner:
                     xlOwnersSheet = xlWorkBook.Worksheets.Add();
                     xlOwnersSheet.Name = name;
@@ -393,7 +394,7 @@ namespace PDF2ExcelVsto
                     xlZikotSheet.Select();
                     break;
                 case Sheets.BatimProperty:
-                     xlBatimPropertySheet.Select();
+                    xlBatimPropertySheet.Select();
                     break;
                 case Sheets.BatimOwners:
                     xlBatimOwnersSheet.Select();
@@ -429,8 +430,8 @@ namespace PDF2ExcelVsto
             switch (sn)
             {
                 case Sheets.Owner:
-                    retSheet = xlOwnersSheet ;
-                   break;
+                    retSheet = xlOwnersSheet;
+                    break;
                 case Sheets.Leasing:
                     retSheet = xlLeasingSheet;
                     break;
@@ -497,8 +498,8 @@ namespace PDF2ExcelVsto
                 ret = Convert.ToInt32(cellValue);
                 return ret;
             }
-            catch(Exception e)
-            { 
+            catch (Exception e)
+            {
                 MessageBox.Show(e.ToString());
             }
             return ret;
@@ -508,7 +509,7 @@ namespace PDF2ExcelVsto
             int rowNumber = 3;
             System.Drawing.Color PattensBlue = GetFromRGB(0xDA, 0xEE, 0xF3);
             string NewShekel = "\u20AA";
-            string test1 = "שווי הזכויות במצב הנכנס (" + NewShekel +")";
+            string test1 = "שווי הזכויות במצב הנכנס (" + NewShekel + ")";
 
             HeadTitle(xlJoinSplitSheet, "פינוי בינוי", 1, 1, 17, XlHAlign.xlHAlignCenter, XlVAlign.xlVAlignCenter, 10, true, PattensBlue, 13, true, XlBorderWeight.xlThin);
             HeadTitle(xlJoinSplitSheet, "נתוני המקרקעין", 2, 1, 6, XlHAlign.xlHAlignCenter, XlVAlign.xlVAlignCenter, 10, true, PattensBlue, 113, true, XlBorderWeight.xlThin);
@@ -652,7 +653,7 @@ namespace PDF2ExcelVsto
 
             HeadTitle(xlBatimOwnersSheet, "גוש", 2, 1, 1, XlHAlign.xlHAlignCenter, XlVAlign.xlVAlignCenter, 11, true, System.Drawing.Color.Aqua, 20, true, XlBorderWeight.xlMedium);
             HeadTitle(xlBatimOwnersSheet, "חלקה", 2, 2, 2, XlHAlign.xlHAlignCenter, XlVAlign.xlVAlignCenter, 11, true, System.Drawing.Color.Aqua, 20, true, XlBorderWeight.xlMedium);
-             HeadTitle(xlBatimOwnersSheet, "שטח חלקה במ\"ר", 2, 3, 3, XlHAlign.xlHAlignCenter, XlVAlign.xlVAlignCenter, 11, true, System.Drawing.Color.Aqua, 20, true, XlBorderWeight.xlMedium);
+            HeadTitle(xlBatimOwnersSheet, "שטח חלקה במ\"ר", 2, 3, 3, XlHAlign.xlHAlignCenter, XlVAlign.xlVAlignCenter, 11, true, System.Drawing.Color.Aqua, 20, true, XlBorderWeight.xlMedium);
             HeadTitle(xlBatimOwnersSheet, "תת חלקה", 2, 4, 4, XlHAlign.xlHAlignCenter, XlVAlign.xlVAlignCenter, 11, true, System.Drawing.Color.Aqua, 20, true, XlBorderWeight.xlMedium);
             HeadTitle(xlBatimOwnersSheet, "שטח במ\"ר", 2, 5, 5, XlHAlign.xlHAlignCenter, XlVAlign.xlVAlignCenter, 11, true, System.Drawing.Color.Aqua, 20, true, XlBorderWeight.xlMedium);
             HeadTitle(xlBatimOwnersSheet, "תיאור קומה", 2, 6, 6, XlHAlign.xlHAlignCenter, XlVAlign.xlVAlignCenter, 11, true, System.Drawing.Color.Aqua, 20, true, XlBorderWeight.xlMedium);
@@ -686,7 +687,7 @@ namespace PDF2ExcelVsto
             HeadTitle(xlBatimPropertySheet, "רכוש משותף - בתים משותפים", 1, 1, 19, XlHAlign.xlHAlignCenter, XlVAlign.xlVAlignCenter, 12, true, System.Drawing.Color.Aqua, 40, true, XlBorderWeight.xlMedium);
 
             HeadTitle(xlBatimPropertySheet, "גו\"ח", 2, 1, 2, XlHAlign.xlHAlignCenter, XlVAlign.xlVAlignCenter, 11, true, System.Drawing.Color.Aqua, 20, true, XlBorderWeight.xlMedium);
-            HeadTitle(xlBatimPropertySheet,"הנכס נוצר", 2, 3, 5, XlHAlign.xlHAlignCenter, XlVAlign.xlVAlignCenter, 11, true, System.Drawing.Color.Aqua, 20, true, XlBorderWeight.xlMedium);
+            HeadTitle(xlBatimPropertySheet, "הנכס נוצר", 2, 3, 5, XlHAlign.xlHAlignCenter, XlVAlign.xlVAlignCenter, 11, true, System.Drawing.Color.Aqua, 20, true, XlBorderWeight.xlMedium);
             HeadTitle(xlBatimPropertySheet, "הרכוש המשותף", 2, 6, 14, XlHAlign.xlHAlignCenter, XlVAlign.xlVAlignCenter, 11, true, System.Drawing.Color.Aqua, 20, true, XlBorderWeight.xlMedium);
             HeadTitle(xlBatimPropertySheet, "הערות - זיקות הנאה", 2, 15, 16, XlHAlign.xlHAlignCenter, XlVAlign.xlVAlignCenter, 11, true, System.Drawing.Color.Aqua, 20, true, XlBorderWeight.xlMedium);
             HeadTitle(xlBatimPropertySheet, "גירסת נסח", 2, 17, 19, XlHAlign.xlHAlignCenter, XlVAlign.xlVAlignCenter, 11, true, System.Drawing.Color.Aqua, 20, true, XlBorderWeight.xlMedium);
@@ -759,7 +760,7 @@ namespace PDF2ExcelVsto
         public int BuildRemarkHeader()
         {
             int rowNumber = 3;
-            HeadTitle(xlRemarksSheet, "הערות - פנקס הזכויות", 1, 1,10, XlHAlign.xlHAlignCenter, XlVAlign.xlVAlignCenter, 12, true, System.Drawing.Color.Aqua, 40, true, XlBorderWeight.xlMedium);
+            HeadTitle(xlRemarksSheet, "הערות - פנקס הזכויות", 1, 1, 10, XlHAlign.xlHAlignCenter, XlVAlign.xlVAlignCenter, 12, true, System.Drawing.Color.Aqua, 40, true, XlBorderWeight.xlMedium);
             HeadTitle(xlRemarksSheet, "גוש", 2, 1, 1, XlHAlign.xlHAlignCenter, XlVAlign.xlVAlignCenter, 11, true, System.Drawing.Color.Aqua, 40, true, XlBorderWeight.xlThin);
             HeadTitle(xlRemarksSheet, "חלקה", 2, 2, 2, XlHAlign.xlHAlignCenter, XlVAlign.xlVAlignCenter, 11, true, System.Drawing.Color.Aqua, 40, true, XlBorderWeight.xlThin);
             HeadTitle(xlRemarksSheet, "מס. שטר", 2, 3, 3, XlHAlign.xlHAlignCenter, XlVAlign.xlVAlignCenter, 11, true, System.Drawing.Color.Aqua, 40, true, XlBorderWeight.xlThin);
@@ -826,7 +827,7 @@ namespace PDF2ExcelVsto
             int rowNumber = 3;
             HeadTitle(xlPropertySheet, "תאור הנכס - פנקס הזכויות", 1, 1, 9, XlHAlign.xlHAlignCenter, XlVAlign.xlVAlignCenter, 12, true, System.Drawing.Color.Aqua, 40, true, XlBorderWeight.xlMedium);
             HeadTitle(xlPropertySheet, "מס\"ד", 2, 1, 1, XlHAlign.xlHAlignCenter, XlVAlign.xlVAlignCenter, 11, true, System.Drawing.Color.Aqua, 40, true, XlBorderWeight.xlThin);
-            HeadTitle(xlPropertySheet, "גוש", 2, 2,2, XlHAlign.xlHAlignCenter, XlVAlign.xlVAlignCenter, 11, true, System.Drawing.Color.Aqua, 40, true, XlBorderWeight.xlThin);
+            HeadTitle(xlPropertySheet, "גוש", 2, 2, 2, XlHAlign.xlHAlignCenter, XlVAlign.xlVAlignCenter, 11, true, System.Drawing.Color.Aqua, 40, true, XlBorderWeight.xlThin);
             HeadTitle(xlPropertySheet, "חלקה", 2, 3, 3, XlHAlign.xlHAlignCenter, XlVAlign.xlVAlignCenter, 11, true, System.Drawing.Color.Aqua, 40, true, XlBorderWeight.xlThin);
             HeadTitle(xlPropertySheet, "רשויות", 2, 4, 4, XlHAlign.xlHAlignCenter, XlVAlign.xlVAlignCenter, 11, true, System.Drawing.Color.Aqua, 40, true, XlBorderWeight.xlThin);
             HeadTitle(xlPropertySheet, "שטח במ\"ר", 2, 5, 5, XlHAlign.xlHAlignCenter, XlVAlign.xlVAlignCenter, 11, true, System.Drawing.Color.Aqua, 40, true, XlBorderWeight.xlThin);
@@ -885,7 +886,7 @@ namespace PDF2ExcelVsto
             rowNumber = 3;
             return rowNumber;
         }
-        public void addNameRange(Sheets sn, int irow1, int irow2, int icol1, int icol2,int gush, int helka, int tat, string prefix)
+        public void addNameRange(Sheets sn, int irow1, int irow2, int icol1, int icol2, int gush, int helka, int tat, string prefix)
         {
             string sss = prefix + "_" + gush.ToString() + "_" + helka.ToString() + "_" + tat.ToString();
             Excel.Worksheet asheet = getSheet(sn);
@@ -894,8 +895,8 @@ namespace PDF2ExcelVsto
         }
         public void setBoarder(Sheets sn, int irow1, int irow2, int icol1, int icol2, int thickness)
         {
-            XlBorderWeight thick; 
-            if ( thickness == 0)
+            XlBorderWeight thick;
+            if (thickness == 0)
             {
                 thick = XlBorderWeight.xlThick;
             }
@@ -916,11 +917,11 @@ namespace PDF2ExcelVsto
                 thick = XlBorderWeight.xlMedium;
             }
 
-            Worksheet asheet = getSheet(sn);            
+            Worksheet asheet = getSheet(sn);
             Range frame = asheet.Range[asheet.Cells[irow1, icol1], asheet.Cells[irow2, icol2]].Cells;
             frame.BorderAround2(Type.Missing, thick, XlColorIndex.xlColorIndexAutomatic, Type.Missing);
 
-//            frame.EntireColumn.BorderAround2(XlLineStyle.xlContinuous, XlBorderWeight.xlMedium, XlColorIndex.xlColorIndexAutomatic, XlColorIndex.xlColorIndexAutomatic);
+            //            frame.EntireColumn.BorderAround2(XlLineStyle.xlContinuous, XlBorderWeight.xlMedium, XlColorIndex.xlColorIndexAutomatic, XlColorIndex.xlColorIndexAutomatic);
         }
 
         public void mergeCells(Sheets asheet, int row1, int col1, int row2, int col2)
@@ -931,7 +932,7 @@ namespace PDF2ExcelVsto
             titleRang.Style.VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;
         }
 
-        public void HeadTitle(Worksheet theSheet, string title, int irow, int icol, int endcol, XlHAlign hAlign, XlVAlign vAlign, int fonSize, bool bBolt, System.Drawing.Color titleColor, int rowHeight , bool boarder, XlBorderWeight weight )
+        public void HeadTitle(Worksheet theSheet, string title, int irow, int icol, int endcol, XlHAlign hAlign, XlVAlign vAlign, int fonSize, bool bBolt, System.Drawing.Color titleColor, int rowHeight, bool boarder, XlBorderWeight weight)
 
         {
             theSheet.Cells[irow, icol] = title;
@@ -949,7 +950,7 @@ namespace PDF2ExcelVsto
 
             if (boarder)
             {
-                titleRang.BorderAround(XlLineStyle.xlContinuous,weight,XlColorIndex.xlColorIndexAutomatic,XlColorIndex.xlColorIndexAutomatic);
+                titleRang.BorderAround(XlLineStyle.xlContinuous, weight, XlColorIndex.xlColorIndexAutomatic, XlColorIndex.xlColorIndexAutomatic);
             }
         }
 
@@ -960,24 +961,24 @@ namespace PDF2ExcelVsto
             Rang.Interior.Color = Color;
         }
 
-        public void PutValueInSheetRowColumn(Sheets sn, int row, int column, string  val)
+        public void PutValueInSheetRowColumn(Sheets sn, int row, int column, string val)
         {
             Worksheet asheet = getSheet(sn);
-            if (!(val is null)) 
+            if (!(val is null))
             {
                 asheet.Cells[row, column] = val;
-            }   
+            }
         }
 
         public void createHyperLink(Sheets sn, int row, int column, string gush, string helka, string tat, string prefix)
         {
             string subAddress = prefix + "_" + gush + "_" + helka + "_" + tat;
             Worksheet asheet = getSheet(sn);
-            Object Anchor = asheet.Cells[row,column];
+            Object Anchor = asheet.Cells[row, column];
             Object TextToDisplay = "X";
             asheet.Hyperlinks.Add(Anchor, "", subAddress, "", "X");
         }
-        public void setSheetCellWrapText(Sheets sn, bool onoff, int columns , int rows , int rowtofreez)
+        public void setSheetCellWrapText(Sheets sn, bool onoff, int columns, int rows, int rowtofreez)
         {
             Worksheet asheet = getSheet(sn);
             Range rrr = asheet.Cells[rows, columns];
@@ -996,17 +997,17 @@ namespace PDF2ExcelVsto
         {
             xlApp.ActiveWorkbook.SaveAs(location);
             xlApp.ActiveWorkbook.Close();
-            if ( BatchMode)
+            if (BatchMode)
             {
                 Marshal.ReleaseComObject(xlApp);
                 xlApp.Quit();
             }
             else
-            {               
+            {
                 xlApp.Workbooks.Add();
             }
         }
-        
+
         public void CorrectFormatForSum(Sheets sn, int columns, int rows1, int rows2, string numFormat)
         {
             Worksheet asheet = getSheet(sn);
@@ -1034,7 +1035,7 @@ namespace PDF2ExcelVsto
             return RGBColor;
         }
 
-        public  class PutCellParameters
+        public class PutCellParameters
         {
             public bool ifmerge { get; set; }
             public int Rowextension { get; set; }
@@ -1054,7 +1055,7 @@ namespace PDF2ExcelVsto
             Range sellection;
             if (param.ifmerge)
             {
-                sellection = asheet.Range[asheet.Cells[row, col], asheet.Cells[row + param.Rowextension-1 , col + param.Columnextension-1]].Cells;
+                sellection = asheet.Range[asheet.Cells[row, col], asheet.Cells[row + param.Rowextension - 1, col + param.Columnextension - 1]].Cells;
                 sellection.Merge(Type.Missing);
             }
             else

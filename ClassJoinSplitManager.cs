@@ -35,7 +35,7 @@ namespace PDF2ExcelVsto
 
             if (allNesachim.Count == 0) return;
 
- //           if ((allBatim is null)) return;
+            //           if ((allBatim is null)) return;
             excelOperations.createSheet(ClassExcelOperations.Sheets.JoinSplit, "איחוד וחלוקה", Color.Yellow);
             excelOperations.setActiveSheet(ClassExcelOperations.Sheets.JoinSplit);
             excelOperations.refreshAll();
@@ -66,12 +66,12 @@ namespace PDF2ExcelVsto
             celparam.Columnextension = 1;
             celparam.fontSize = 10;
 
-            foreach ( ClassBase nesach in allNesachim)
+            foreach (ClassBase nesach in allNesachim)
             {
                 celparam.colorbackground = ClassUtils.GetRandomColour();
                 if (nesach.Name == "batim")
                 {
-                    Classbatim batim = (Classbatim) nesach;
+                    Classbatim batim = (Classbatim)nesach;
                     try
                     {
                         if (batim.tatHelkot.Count == 0) continue;
@@ -222,7 +222,7 @@ namespace PDF2ExcelVsto
                         {
                             loc = taboo.zhuiotOwners.Count;
                             topcurrentRow = currentrow;
-                            for ( int j = 0; j < loc; j++)
+                            for (int j = 0; j < loc; j++)
                             {
                                 globalCount++;
                                 oldColor = celparam.colorbackground;
@@ -292,9 +292,9 @@ namespace PDF2ExcelVsto
         {
             int ret = 0;
             ret = taboo.zhuiotOwners.Count;
-            if ( taboo.leasings != null)
+            if (taboo.leasings != null)
             {
-                ret = taboo.leasings[taboo.leasings.Count-1].leasingOwners.Count;
+                ret = taboo.leasings[taboo.leasings.Count - 1].leasingOwners.Count;
             }
             return ret;
         }
@@ -332,17 +332,17 @@ namespace PDF2ExcelVsto
             return dictionary0;
         }
 
-        public List<ClassBase> sortDictionaryByHelka(Dictionary<ClassBase,int> sourceDic)
+        public List<ClassBase> sortDictionaryByHelka(Dictionary<ClassBase, int> sourceDic)
         {
             List<ClassBase> ret = new List<ClassBase>();
             Dictionary<ClassBase, int> helkasection = new Dictionary<ClassBase, int>();
 
             var first = sourceDic.First();
             int val = first.Value;
-            
-            foreach(var item in sourceDic)
+
+            foreach (var item in sourceDic)
             {
-                if ( val == item.Value)
+                if (val == item.Value)
                 {
                     helkasection.Add(item.Key, Convert.ToInt32(item.Key.helka));
                     continue;
@@ -353,9 +353,9 @@ namespace PDF2ExcelVsto
                     Dictionary<ClassBase, int> dictionary0 = new Dictionary<ClassBase, int>();
                     IEnumerable<KeyValuePair<ClassBase, int>> sortedDict = from entry in helkasection orderby entry.Value ascending select entry;
                     dictionary0 = sortedDict.ToDictionary(pair => pair.Key, pair => pair.Value);
-                    foreach ( var item1 in dictionary0)
+                    foreach (var item1 in dictionary0)
                     {
-                        ret.Add(item1.Key );                       
+                        ret.Add(item1.Key);
                     }
                     helkasection.Clear();
                     helkasection.Add(item.Key, Convert.ToInt32(item.Key.helka));
@@ -418,7 +418,7 @@ namespace PDF2ExcelVsto
                     finalDictionary = sortedDict.ToDictionary(pair => pair.Key, pair => pair.Value);
 
                     val = nextone;
-                }               
+                }
             }
             return allTabooANDBatim;
         }
@@ -426,7 +426,7 @@ namespace PDF2ExcelVsto
         public List<ClassBase> SolrtAllByGushHelkot()
         {
             List<ClassBase> all = new List<ClassBase>();
- 
+
             Dictionary<ClassBase, int> dictionaryofhelkot = new Dictionary<ClassBase, int>();
             Dictionary<ClassBase, int> allnesahByGush = sortbyGush();
             foreach (var item in allnesahByGush)
