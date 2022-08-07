@@ -1067,7 +1067,9 @@ namespace PDF2ExcelVsto
             sellection.Interior.Color = param.colorbackground;
             sellection.BorderAround2(Type.Missing, param.Weight, XlColorIndex.xlColorIndexAutomatic, Type.Missing);
             sellection.Font.Size = param.fontSize;
-            asheet.Cells[row, col] = value;
+
+            asheet.Cells[row, col].SetValue<string>(Convert.ToString(value));
+ //           asheet.Cells[row, col] = value;
             sellection.Select();
         }
 

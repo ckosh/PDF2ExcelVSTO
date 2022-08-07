@@ -53,8 +53,8 @@ namespace PDF2ExcelVsto
             userdebug = "chaim.koshizky@grabnadlan.co.il";
             passworddebug = "3O5!RvHQ6Y5q";
             password = "L#(Bcw^Wi7{7";
-            port = 110;
-            useSsl = false;
+            port = 110; // 995;
+            useSsl = false; // true;
             //           password = "fDb^PAisuvv0"; // users
             //            password = "7{7iW^wcB(#L";
             //            password = "zmuTA$3P+sla";
@@ -650,27 +650,26 @@ namespace PDF2ExcelVsto
         public double  getTotalCost( List<int>numberOfOwners)
         {
             double totalCost = 0;
-            double costByOwners = 0.0;
-            double costByFiles = 0.0;
             int sumOfOwners = 0;
+            int sumOfOwnersToCharge = 0;
+
+
             for ( int j = 0; j < numberOfOwners.Count ; j++)
             {
                 sumOfOwners = sumOfOwners + numberOfOwners[j];
             }
-            costByOwners = sumOfOwners * 0.2;
-            costByFiles = numberOfOwners.Count * 5.0;
-            totalCost = Math.Max (costByFiles, costByOwners);
+            sumOfOwnersToCharge = sumOfOwners - (numberOfOwners.Count * 20);
+            
+            if (sumOfOwnersToCharge > 0)
+            {
+                totalCost = numberOfOwners.Count * 5.0 + sumOfOwnersToCharge*0.2;
+            }
+            else
+            {
+                totalCost = numberOfOwners.Count * 5.0;
+            }
 
-            //for (int i = 0;  i < numberOfOwners.Count; i++)
-            //{
-            //    totalCost = totalCost + 5.0;
-            //    if(numberOfOwners[i] > 25 )
-            //    {
-            //        totalCost = totalCost + (numberOfOwners[i] - 25) * 0.2;
-            //    }
-            //}
             return totalCost;
-
         }
     }
 }

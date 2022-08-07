@@ -546,6 +546,84 @@ namespace PDF2ExcelVsto
             }
             return results;
         }
+
+        public static List<string> rawlineToValuesLeasing1(List<string> rawKey0, List<string> rawValue) 
+        {
+            int numpar = 0;
+            string LeasType = "";
+            string Name = "";
+            string IDtype = "";
+            string IDnumber = "";
+            string part = "";
+            string shtar = "";
+            string date = "";
+            string ac = "";
+
+            List<string> retList = new List<string>();
+
+            int[] array = new int[rawValue.Count];
+            for (int j2 = 0; j2 < rawValue.Count; j2++) array[j2] = 0;
+
+ //           rawValue.Reverse();
+
+            int pos = ClassUtils.findShtarNumberWithin(rawValue);
+            if (pos > -1)
+            {
+                shtar = rawValue[pos];
+                numpar++;
+                array[pos] = 1;
+            }
+            pos = ClassUtils.findIDNumberWithin(rawValue);
+            if (pos > -1)
+            {
+                IDnumber = rawValue[pos];
+                numpar++;
+                array[pos] = 1;
+            }
+            pos = ClassUtils.findIDtypeWithin(rawValue);
+            if (pos > -1)
+            {
+                IDtype = rawValue[pos];
+                numpar++;
+                array[pos] = 1;
+            }
+
+            pos = ClassUtils.findDateWithin(rawValue);  
+            if (pos > -1)
+            {
+                date = rawValue[pos];
+                numpar++;
+                array[pos] = 1;
+            }
+            
+            List<int> poss = ClassUtils.findLeasingTypeWithin(rawValue);
+            if (poss.Count > 0)
+            {
+                ac = "";
+                for (int j1 = 0; j1 < poss.Count; j1++)
+                {
+                    ac = ac + rawValue[poss[j1]] + " ";
+                    array[poss[j1]] = 1;
+                }
+                LeasType = ac;
+                numpar++;
+            }
+            // build remaining - name of mortgage holder
+            ac = "";
+            for (int j1 = 0; j1 < rawValue.Count; j1++)
+            {
+                if (array[j1] == 0) ac = ac + rawValue[j1] + " ";
+            }
+            Name = ac;
+            retList.Add(shtar);
+            retList.Add(date);
+            retList.Add(LeasType);
+            retList.Add(Name);
+            retList.Add(IDtype);
+            retList.Add(IDnumber);
+            return retList;
+        }
+
         public static List<string> rawlineToValuesLeasing0(List<string> rawKey0, List<string> rawValue)
         {
             List<string> results = new List<string>();
@@ -1015,6 +1093,11 @@ namespace PDF2ExcelVsto
             {
                 retVal = 4;
             }
+            else if (ClassUtils.isMatchSequenceStright(rawValue, iv, "צוואה", "על", "פי", "הסכם"))
+            {
+                retVal = 4;
+            }
+
             else if (ClassUtils.isMatchSequenceStright(rawValue, iv, "רכישה", "לפי", "חק", "רכישת"))
             {
                 retVal = 4;

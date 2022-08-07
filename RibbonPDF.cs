@@ -101,7 +101,7 @@ namespace PDF2ExcelVsto
             if (expired) return;
             if (pressed) return;
             pressed = true;
-//            Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
+            //            Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
             batimManager.convertBatimtoExcel();
             zuiotManager.convertZhuiottoExcel();
 //            Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;

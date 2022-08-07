@@ -245,9 +245,271 @@ namespace PDF2ExcelVsto
             }
             return bret;
         }
+        
+        public static List<int> findLeasingTypeWithin(List<string> args)
+        {
+            List<int> pos = new List<int>();
+            if (args.Count >= 6)
+            {
+                if (args[2] == "העברת" && args[3] == "שכירות" && args[4] == "ללא" && args[5] == "תמורה")
+                {
+                    pos.Add(2);
+                    pos.Add(3);
+                    pos.Add(4);
+                    pos.Add(5);
+                    return pos;
+                }
+                else if (args[2] == "תיקון" && args[3] == "טעות" && args[4] == "סופר" && args[5] == "בשכירות")
+                {
+                    pos.Add(2);
+                    pos.Add(3);
+                    pos.Add(4);
+                    pos.Add(5);
+                    return pos;
+                }
+                else if (args[2] == "תיקון" && args[3] == "טעות" && args[4] == "סופר" && args[5] == "בחוכר")
+                {
+                    pos.Add(2);
+                    pos.Add(3);
+                    pos.Add(4);
+                    pos.Add(5);
+                    return pos;
+                }
+                else if (args[2] == "רישום" && args[3] == "בעלות" && args[4] == "לאחר" && args[5] == "הסדר")
+                {
+                    pos.Add(2);
+                    pos.Add(3);
+                    pos.Add(4);
+                    pos.Add(5);
+                    return pos;
+                }
+                else if (args[2] == "רכישה" && args[3] == "לפי" && args[4] == "חק" && args[5] == "רכישת")
+                {
+                    pos.Add(2);
+                    pos.Add(3);
+                    pos.Add(4);
+                    pos.Add(5);
+                    return pos;
+                }
+            }
+            if (args.Count >= 5)
+            {
+                if (args[2] == "העברת" && args[3] == "שכירות" && args[4] == "בירושה")
+                {
+                    pos.Add(2);
+                    pos.Add(3);
+                    pos.Add(4);
+                    return pos;
+                }
+                else if (args[2] == "העברת" && args[3] == "שכירות" && args[4] == "בצוואה")
+                {
+                    pos.Add(2);
+                    pos.Add(3);
+                    pos.Add(4);
+                    return pos;
+                }
+                else if (args[2] == "העברת" && args[3] == "שכירות" && args[4] == "חלקית")
+                {
+                    pos.Add(2);
+                    pos.Add(3);
+                    pos.Add(4);
+                    return pos;
+                }
+                else if (args[2] == "תיקון" && args[3] == "תנאים" && args[4] == "בשכירות")
+                {
+                    pos.Add(2);
+                    pos.Add(3);
+                    pos.Add(4);
+                    return pos;
+                }
+                else if (args[2] == "תיקון" && args[3] == "טעות" && args[4] == "סןפר")
+                {
+                    pos.Add(2);
+                    pos.Add(3);
+                    pos.Add(4);
+                    return pos;
+                }
+                else if (args[2] == "מכר" && args[3] == "ללא" && args[4] == "תמורה")
+                {
+                    pos.Add(2);
+                    pos.Add(3);
+                    pos.Add(4);
+                    return pos;
+                }
+            }
+            if (args.Count >= 4)
+            {
+                if ((args[2] == "התאמת" && args[3] == "רישום" ) ||
+                    (args[2] == "תיקון" && args[3] == "רישום")  ||
+                    (args[2] == "העברת" && args[3] == "שכירות")  ||
+                    (args[2] == "שנוי" && args[3] == "שם")  ||
+                    (args[2] == "שינוי" && args[3] == "שם")  ||
+                    (args[2] == "צירוף" && args[3] == "חלקים")  )
+                {
+                    pos.Add(2);
+                    pos.Add(3);
+                    return pos;
+                }
+            }
+            if ( args.Count >= 3)
+            {
+                if ((args[2] == "שכירות") ||
+                    (args[2] == "עודף") ||
+                    (args[2] == "פיצול") ||
+                    (args[2] == "ירושה") ||
+                    (args[2] == "מכר") ||
+                    (args[2] == "חלוקה") ||
+                    (args[2] == "איחוד") ||
+                    (args[2] == "צוואה") ||
+                    (args[2] == "עדכון"))
+                    pos.Add(2);
+                return pos;
+
+            }
+            return pos;
+        }
+        public static List<int> findMortgageTypeWithin(List<string>args)
+        {
+            List<int> pos = new List<int>();
+            if (args.Count >= 4)
+            {
+                if (args[0] == "תיקון" && args[1] == "טעות" && args[2] == "סופר" && args[3] == "במשכנתה")
+                {
+                    pos.Add(0);
+                    pos.Add(1);
+                    pos.Add(2);
+                    pos.Add(3);
+                    return pos;
+                }
+            }
+            if (args.Count >= 3)
+            {
+                if (args[0] == "תיקון" && args[1] == "טעות" && args[2] == "סופר" )
+                {
+                    pos.Add(0);
+                    pos.Add(1);
+                    pos.Add(2);
+                    return pos;
+                }
+            }
+            if ( args.Count >= 3)
+            {
+                if (args[0] == "שינוי" && args[1] == "בתנאי" && args[2] == "המשכנתה" )
+                {
+                    pos.Add(0);
+                    pos.Add(1);
+                    pos.Add(2);
+                    return pos;
+                }
+            }
+            if (args[0] == "משכנתה")
+            {
+                pos.Add(0);
+                return pos;
+            }
+
+             return pos;
+        }
+        public static List<int> findPartOfMortgage(List<string> args)
+        {
+            List<int> pos = new List<int>();
+
+            for (int i = 0; i < args.Count; i++)
+            {
+                if (args[i] == "בשלמות")
+                {
+                    pos.Add(i);
+                    return pos;
+                }
+            }
+            if ( args.Count >= 2)
+            {
+                for (int i = 0; i < args.Count - 2; i++)
+                {
+                    if (args[i] == "במקרקעין" && args[i + 1] == "חלק")
+                    {
+                        pos.Add(i);
+                        pos.Add(i + 1);
+                        return pos;
+                    }
+                }
+            }
+            if (args.Count >= 3)
+            {
+                for (int i = 0; i < args.Count - 2; i++)
+                {
+                    if (isAllDigit(args[i]) && args[i + 1] == "/" && isAllDigit(args[i+2]))
+                    {
+                        pos.Add(i + 2);
+                        pos.Add(i + 1);
+                        pos.Add(i );
+                        return pos;
+                    }
+                }
+            }
+
+            return pos;
+        }
+            
+        public static int findIDtypeWithin(List<string> args)
+        {
+            int pos = -1;
+            for (int i = 0; i < args.Count; i++)
+            {
+                if (isIdType(args[i]))
+                {
+                    pos = i;
+                    break;
+                }
+            }
+            return pos;
+        }
+
+        public static int findDateWithin(List<string> args)
+        {
+            int pos = -1;
+            for (int i = 0; i < args.Count; i++)
+            {
+                if (isDate(args[i]))
+                {
+                    pos = i;
+                    break;
+                }
+            }
+            return pos;
+        }
+
+        public static int findShtarNumberWithin(List<string> args)
+        {
+            int pos = -1;
+            
+            for (int i = 0; i < args.Count; i++)
+            {
+                if (isShtarNumber(args[i]))
+                {
+                    pos = i;
+                    break;
+                }
+            }
+            return pos;
+        }
+        public static int findIDNumberWithin(List<string> args)
+        {
+            int pos = -1;
+            for (int i = 0; i < args.Count ; i++)
+            {
+                if (IsIDNumber(args[i]))
+                {
+                    pos = i;
+                    break;
+                }
+            }
+            return pos;
+        }
         public static bool isShtarNumber(string sss)
         {
             bool bret = false;
+            if (sss.Length < 2) return bret;
 
             string[] fff = sss.Split('/');
             if (fff.Length == 3 || fff.Length == 2)
@@ -617,6 +879,7 @@ namespace PDF2ExcelVsto
         public static string convertPartToFraction(string parts)
         {
             string ret = "";
+            parts = String.Concat(parts.Where(c => !Char.IsWhiteSpace(c)));
             if (parts == "בשלמות")
             {
                 Double myval = 1.0;
@@ -761,6 +1024,11 @@ namespace PDF2ExcelVsto
                 if (ClassUtils.isMatchSequenceNormal(temp, iv, "רישום", "לפי", "צו", "בית","משפט"))
                 {
                     sss = temp[iv] + " " + temp[iv + 1] + " " + temp[iv + 2] + " " + temp[iv + 3] + " " + temp[iv+4]  ;
+                    result.Add(sss, 5);
+                }
+                else if (ClassUtils.isMatchSequenceNormal(temp, iv, "מכר", "לפי", "צו", "בית", "משפט"))
+                {
+                    sss = temp[iv] + " " + temp[iv + 1] + " " + temp[iv + 2] + " " + temp[iv + 3] + " " + temp[iv + 4];
                     result.Add(sss, 5);
                 }
                 else if (ClassUtils.isMatchSequenceNormal(temp, iv, "העברת", "שכירות", "ללא", "תמורה"))

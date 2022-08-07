@@ -270,6 +270,13 @@ namespace PDF2ExcelVsto
         public static List<string> parseMortgage(List<string> argVal, ref bool skipNextline)
         {
             List<string> results = new List<string>();
+            if (argVal.Count < 2)
+            {
+                skipNextline = true;
+                results.Add(argVal[0]);
+                return results;
+            }
+
             for (int i = 0; i < 6; i++) results.Add(null);
             int[] markVal = new int[argVal.Count];
             int offset = 0;

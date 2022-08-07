@@ -140,6 +140,8 @@ namespace PDF2ExcelVsto
             int startrow = 0;
             int startrowFile = 0;
             bool firstRow = true;
+            int startmainSection;
+            int startRemarkSection;
             foreach (Classbatim batim in allBatim)
             {
                 firstRow = true;
@@ -149,31 +151,40 @@ namespace PDF2ExcelVsto
                 {
                     if (batim.tatHelkot[i].mortgageTatHelkas.Count == 0) continue;
                     startrow = currentrow;
-                    if (firstRow) excelOperations.PutValueInSheetRowColumn(ClassExcelOperations.Sheets.BatimMortgage, currentrow, 1, batim.header.gush);
-                    if (firstRow) excelOperations.PutValueInSheetRowColumn(ClassExcelOperations.Sheets.BatimMortgage, currentrow, 2, batim.header.helka);
-                    excelOperations.PutValueInSheetRowColumn(ClassExcelOperations.Sheets.BatimMortgage, currentrow, 3, batim.tatHelkot[i].number.ToString());
-                    if (firstRow) excelOperations.PutValueInSheetRowColumn(ClassExcelOperations.Sheets.BatimMortgage, currentrow, 12, batim.PDFFileName);
+                    startmainSection = currentrow;
+                    startRemarkSection = currentrow;
+
+                    if (firstRow) excelOperations.PutValueInSheetRowColumn(ClassExcelOperations.Sheets.BatimMortgage, startmainSection, 1, batim.header.gush);
+                    if (firstRow) excelOperations.PutValueInSheetRowColumn(ClassExcelOperations.Sheets.BatimMortgage, startmainSection, 2, batim.header.helka);
+                    excelOperations.PutValueInSheetRowColumn(ClassExcelOperations.Sheets.BatimMortgage, startmainSection, 3, batim.tatHelkot[i].number.ToString());
+                    if (firstRow) excelOperations.PutValueInSheetRowColumn(ClassExcelOperations.Sheets.BatimMortgage, startmainSection, 12, batim.PDFFileName);
                     firstRow = false;
                     for (int j = 0; j < batim.tatHelkot[i].mortgageTatHelkas.Count; j++)
                     {
                         Classbatim.MortgageTatHelka mort = batim.tatHelkot[i].mortgageTatHelkas[j];
-                        excelOperations.PutValueInSheetRowColumn(ClassExcelOperations.Sheets.BatimMortgage, currentrow, 4, mort.mtype);
-                        excelOperations.PutValueInSheetRowColumn(ClassExcelOperations.Sheets.BatimMortgage, currentrow, 5, mort.Name);
-                        excelOperations.PutValueInSheetRowColumn(ClassExcelOperations.Sheets.BatimMortgage, currentrow, 6, mort.idType);
-                        excelOperations.PutValueInSheetRowColumn(ClassExcelOperations.Sheets.BatimMortgage, currentrow, 7, mort.idNumber);
-                        excelOperations.PutValueInSheetRowColumn(ClassExcelOperations.Sheets.BatimMortgage, currentrow, 8, mort.part);
-                        excelOperations.PutValueInSheetRowColumn(ClassExcelOperations.Sheets.BatimMortgage, currentrow, 9, mort.shtar);
-                        excelOperations.PutValueInSheetRowColumn(ClassExcelOperations.Sheets.BatimMortgage, currentrow, 10, mort.grade);
+                        for ( int j1 = 0; j1 < mort.Name.Count; j1++)
+                        {
+                            excelOperations.PutValueInSheetRowColumn(ClassExcelOperations.Sheets.BatimMortgage, startmainSection, 4, mort.mtype[j1]);
+                            excelOperations.PutValueInSheetRowColumn(ClassExcelOperations.Sheets.BatimMortgage, startmainSection, 5, mort.Name[j1]);
+                            excelOperations.PutValueInSheetRowColumn(ClassExcelOperations.Sheets.BatimMortgage, startmainSection, 6, mort.idType[j1]);
+                            excelOperations.PutValueInSheetRowColumn(ClassExcelOperations.Sheets.BatimMortgage, startmainSection, 7, mort.idNumber[j1]);
+                            excelOperations.PutValueInSheetRowColumn(ClassExcelOperations.Sheets.BatimMortgage, startmainSection, 8, mort.part[j1]);
+                            excelOperations.PutValueInSheetRowColumn(ClassExcelOperations.Sheets.BatimMortgage, startmainSection, 9, mort.shtar[j1]);
+                            if ( j1 == 0 ) excelOperations.PutValueInSheetRowColumn(ClassExcelOperations.Sheets.BatimMortgage, startmainSection, 10, mort.grade[0]);
+                            startmainSection++;
+                        }
+        
                         if ( mort.mortRemarks.Count > 0)
                         {
                             for ( int k = 0; k < mort.mortRemarks.Count; k++)
                             {
-                                excelOperations.PutValueInSheetRowColumn(ClassExcelOperations.Sheets.BatimMortgage, currentrow, 11, mort.mortRemarks[k]);
-                                currentrow++;
+                                excelOperations.PutValueInSheetRowColumn(ClassExcelOperations.Sheets.BatimMortgage, startRemarkSection, 11, mort.mortRemarks[k]);
+                                startRemarkSection++;
                             }
-                            currentrow--;
+                            startRemarkSection--;
                         }
-                        currentrow++;
+                        startRemarkSection++;
+                        currentrow = Math.Max(startmainSection, startRemarkSection);                        
                     }
                     excelOperations.setBoarder(ClassExcelOperations.Sheets.BatimMortgage, startrow, currentrow - 1, 1, 12, 2);
                     excelOperations.addNameRange(ClassExcelOperations.Sheets.BatimMortgage, startrow, currentrow - 1, 1, 12, Convert.ToInt32(batim.header.gush),Convert.ToInt32(batim.header.helka), Convert.ToInt32(batim.tatHelkot[i].number),"BM");
@@ -751,6 +762,16 @@ namespace PDF2ExcelVsto
                                     }
                                     currentRow++;
                                     if (skipNextLine) currentRow++;
+                                    // check if name flows to other line
+                                    List<string> temp1 = new List<string>(slExcelData.DataRows[currentRow]);
+                                    temp1 = ClassUtils.reverseOrder(temp1);
+                                    if(temp1.Count < 2)
+                                    {
+                                        string lastval = leas.Name[leas.Name.Count - 1];
+                                        lastval = lastval + " " + temp1[0];
+                                        leas.Name[leas.Name.Count - 1] = lastval;
+                                        currentRow++;
+                                    }
                                 }
                                 else if (ClassUtils.isArrayIncludeOneOfStringParam(temp, "רמה:", "סיום:")) // end of section 
                                 {
@@ -796,64 +817,136 @@ namespace PDF2ExcelVsto
                     try
                     {
                         if (entry.Key == "mortgage")
-                        {
+                        {                       
                             do
                             {
+                                Classbatim.MortgageTatHelka mort = new Classbatim.MortgageTatHelka();
+                                string ac = "";
+
                                 temp = new List<string>(slExcelData.DataRows[currentRow]);
                                 temp = ClassUtils.reverseOrder(temp);
-                                List<string> l3 = new List<string>();
-                                if (ClassUtils.isShtarNumber(temp[temp.Count - 1]))
+                                while (ClassUtils.isArrayIncludString(temp, "דרגה:") == -1)
                                 {
-                                    bool skipNextLine = false;
-                                    Classbatim.MortgageTatHelka mort = new Classbatim.MortgageTatHelka();
-                                    l3 = ClassbatimUtils0.parseMortgage(temp, ref skipNextLine);
-                                    mort.mtype = l3[0];
-                                    mort.Name = l3[1];
-                                    mort.idType = l3[2];
-                                    mort.idNumber = l3[3];
-                                    mort.part = l3[4];
-                                    mort.shtar = l3[5];
+                                    int numpar = 0;
+                                    string MogType= "";
+                                    string Name= "";
+                                    string IDtype= "";
+                                    string IDnumber= "";
+                                    string part = "";
+                                    string shtar = "";
+
+                                    int[] array = new int[temp.Count];
+                                    for (int j2 = 0; j2 < temp.Count; j2++) array[j2] = 0;
+
+                                    int pos = ClassUtils.findShtarNumberWithin(temp);
+                                    if (pos > -1)
+                                    {
+                                        shtar = temp[pos];
+                                        numpar++;
+                                        //mort.shtar.Add(temp[pos]);
+                                        array[pos] = 1;
+                                    }
+                                    pos = ClassUtils.findIDNumberWithin(temp);
+                                    if ( pos > -1)
+                                    {
+                                        IDnumber = temp[pos];
+                                        numpar++;
+                                        //mort.idNumber.Add(temp[pos]);
+                                        array[pos] = 1;
+                                    }
+                                    pos = ClassUtils.findIDtypeWithin(temp);
+                                    if ( pos > -1)
+                                    {
+                                        IDtype = temp[pos];
+                                        numpar++;
+                                        //mort.idType.Add(temp[pos]);
+                                        array[pos] = 1;
+                                    }
+                                    List<int> poss = ClassUtils.findMortgageTypeWithin(temp);
+                                    if ( poss.Count > 0)
+                                    {
+                                        ac = "";
+                                        for ( int j1 = 0; j1 < poss.Count; j1++)
+                                        {
+                                            ac = ac + temp[poss[j1]] + " ";
+                                            array[poss[j1]] = 1;
+                                        }
+                                        MogType = ac;
+                                        numpar++;
+                                        //mort.mtype.Add(ac);
+                                    }
+                                    poss = ClassUtils.findPartOfMortgage(temp);
+                                    if (poss.Count > 0)
+                                    {
+                                        ac = "";
+                                        for (int j1 = 0; j1 < poss.Count; j1++)
+                                        {
+                                            ac = ac + temp[poss[j1]] + " ";
+                                            array[poss[j1]] = 1;
+                                        }
+                                        part = ac;
+                                        numpar++;
+                                        //mort.part.Add(ac);
+                                    }
+                                    // build remaining - name of mortgage holder
+                                    ac = "";
+                                    for ( int j1 = 0;j1 < temp.Count; j1++)
+                                    {
+                                        if (array[j1] == 0) ac = ac + temp[j1] + " ";
+                                    }
+                                    Name = ac;
+                                    numpar++;
+                                    //mort.Name.Add(ac);
+                                    if ( numpar > 1)
+                                    {
+                                        mort.shtar.Add(shtar);
+                                        mort.idNumber.Add(IDnumber);
+                                        mort.idType.Add(IDtype);
+                                        mort.mtype.Add(MogType);
+                                        mort.part.Add(part);
+                                        mort.Name.Add(Name);
+                                    }
+                                    else
+                                    {
+                                        int size = mort.Name.Count;
+                                        string ss1 = mort.Name[size - 1] + Name; 
+                                        mort.Name[size - 1] = ss1;
+                                    }
+
                                     currentRow++;
                                     temp = new List<string>(slExcelData.DataRows[currentRow]);
                                     temp = ClassUtils.reverseOrder(temp);
-                                    if (ClassUtils.isArrayIncludString(temp, "דרגה:") == -1)
+                                }
+                                if (ClassUtils.isArrayIncludString(temp, "דרגה:") > -1)
+                                {
+                                    mort.grade.Add(temp[1]);
+                                }
+
+                                int pos1 = ClassUtils.isArrayIncludString(temp, "הערות:");
+                                if (pos1 > -1)
+                                {
+                                    String ttt = "";
+                                    for (int k = 3; k < temp.Count; k++)
                                     {
-                                        mort.Name = mort.Name + " " + temp[0];
-                                        currentRow++;
-                                        temp = new List<string>(slExcelData.DataRows[currentRow]);
-                                        temp = ClassUtils.reverseOrder(temp);
+                                        ttt = ttt + temp[k] + " ";
                                     }
-                                    if (ClassUtils.isArrayIncludString(temp, "דרגה:") > -1)
+                                    mort.mortRemarks.Add(ttt);
+                                    currentRow++;
+                                    while (currentRow < lastRow.Value)
                                     {
-                                        mort.grade = temp[1];
-                                    }
-                                    int pos = ClassUtils.isArrayIncludString(temp, "הערות:");
-                                    if (pos > -1) 
-                                    {
-                                        String ttt = "";
-                                        for ( int k = 3; k < temp.Count ; k++)
+                                        ttt = "";
+                                        List<string> temp1 = new List<string>(slExcelData.DataRows[currentRow]);
+                                        temp1 = ClassUtils.reverseOrder(temp1);
+                                        for (int k = 0; k < temp1.Count; k++)
                                         {
-                                            ttt = ttt + temp[k] + " ";                                         
+                                            ttt = ttt + temp1[k] + " ";
                                         }
                                         mort.mortRemarks.Add(ttt);
-                                        currentRow++;                                       
-                                        while (currentRow < lastRow.Value)
-                                        {
-                                            ttt = "";
-                                            List<string> temp1 = new List<string>(slExcelData.DataRows[currentRow]);
-                                            temp1 = ClassUtils.reverseOrder(temp1);
-                                            for (int k = 0; k < temp1.Count; k++)
-                                            {
-                                                ttt = ttt +  temp1[k] + " "  ;
-                                            }
-                                            mort.mortRemarks.Add(ttt);
-                                            currentRow++;
-                                        }
+                                        currentRow++;
                                     }
-                                    batim.tatHelkot[i].mortgageTatHelkas.Add(mort);
-                                    
-                                    currentRow++;
                                 }
+                                batim.tatHelkot[i].mortgageTatHelkas.Add(mort);
+                                currentRow++;
                             } while (currentRow < lastRow.Value);
                         }
                     }

@@ -124,25 +124,25 @@ namespace PDF2ExcelVsto
         public class MortgageTatHelka
         {
             public int line;
-            public string mtype;
-            public string Name;
-            public string idType;
-            public string idNumber;
-            public string part;
-            public string shtar;
-            public string grade;
+            public List<string>  mtype;
+            public List<string> Name;
+            public List<string> idType;
+            public List<string> idNumber;
+            public List<string> part;
+            public List<string> shtar;
+            public List<string> grade;
             public List<string> mortRemarks; 
 
             public MortgageTatHelka()
             {
                 line = -1;
-                mtype = "";
-                Name = "";
-                idType = "";
-                idNumber = "";
-                part = "";
-                shtar = "";
-                grade = "";
+                mtype = new List<string>();
+                Name = new List<string>();
+                idType = new List<string>();
+                idNumber = new List<string>();
+                part = new List<string>();
+                shtar = new List<string>();
+                grade = new List<string>();
                 mortRemarks = new List<string>();
             }
         };

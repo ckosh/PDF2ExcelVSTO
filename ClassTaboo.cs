@@ -591,6 +591,18 @@ namespace PDF2ExcelVsto
                     }
                 }
                 rowNumberj = rowNumberj + 2;
+                List<string> temp = new List<string>(slExcelData.DataRows[rowNumberj]);
+                if (ClassUtils.isArrayIncludString(temp, "פרצלציה") > -1)
+                {
+                    temp.RemoveAt(temp.Count - 1);
+                    temp.RemoveAt(temp.Count - 1);
+                    if (temp.Count == 0)
+                    {
+                        rowNumberj++;
+                        temp = new List<string>(slExcelData.DataRows[rowNumberj]);
+                    }
+                }
+
                 if (checkList)
                 {
                     string textToIgnore = "";
@@ -600,12 +612,6 @@ namespace PDF2ExcelVsto
                         string idNum = " ";
                         string idType = " ";
                         string Name = " ";
-                        List<string> temp = new List<string>(slExcelData.DataRows[rowNumberj]);
-                        if (ClassUtils.isArrayIncludString(temp, "פרצלציה") > -1)
-                        {
-                            temp.RemoveAt(temp.Count - 1);
-                            temp.RemoveAt(temp.Count - 1);
-                        }
                         int nn = ClasszhuiotUtils.parseMortgageOwnerCont(l1, temp, textToIgnore, ref idNum, ref idType, ref Name);
                         if (nn < l1.Count - 2)
                         {
@@ -765,73 +771,50 @@ namespace PDF2ExcelVsto
                     rowNumberj++;
                     do
                     {
-                        l2 = ClasszhuiotUtils.rawlineToValuesLeasing0(l1, slExcelData.DataRows[rowNumberj]);
-                        if ( l2.Count != l1.Count)
-                        {
-                            throw new Exception("שגיאת נתונים");
-                        }
-                        l2.Reverse();
+                        List<string> temp = new List<string>(slExcelData.DataRows[rowNumberj]);
+                        temp.Reverse();
+                        l2 = ClasszhuiotUtils.rawlineToValuesLeasing1(l1, temp);
+
+//                        l2 = ClasszhuiotUtils.rawlineToValuesLeasing0(l1, slExcelData.DataRows[rowNumberj]);
+                        //if ( l2.Count != l1.Count)
+                        //{
+                        //    throw new Exception("שגיאת נתונים");
+                        //}
+                        //l2.Reverse();
 
                         //                   l2 = utilities.rawlineToValuesLeasing(slExcelData.DataRows[rowNumberj]);
                         rowNumberj++;
-                        if (l1.Count == l2.Count)
+                        LeasingOwner LeasingOwner = new LeasingOwner();
+                        LeasingOwner.shtarNum = l2[0];
+                        LeasingOwner.date = l2[1];
+                        LeasingOwner.transactionType = l2[2];
+                        LeasingOwner.LeaserName = l2[3];
+                        LeasingOwner.idType = l2[4];
+                        LeasingOwner.idNumber = l2[5];
+
+                        while (!ClassUtils.isArrayIncludeAllStringsParam(slExcelData.DataRows[rowNumberj], "החלק", "בזכות"))
                         {
-                            LeasingOwner LeasingOwner = new LeasingOwner();
-                            for (int k = 0; k < l1.Count; k++)
-                            {
-                                if (l1[k] == "מס' שטר")
-                                {
-                                    LeasingOwner.shtarNum = l2[k];
-                                }
-                                else if (l1[k] == "תאריך")
-                                {
-                                    LeasingOwner.date = l2[k];
-                                }
-                                else if (l1[k] == "מהות פעולה")
-                                {
-                                    LeasingOwner.transactionType = l2[k];
-                                }
-                                else if (l1[k] == "שם החוכר")
-                                {
-                                    LeasingOwner.LeaserName = l2[k];
-                                }
-                                else if (l1[k] == "סוג זיהוי")
-                                {
-                                    LeasingOwner.idType = l2[k];
-                                }
-                                else if (l1[k] == "מס' זיהוי")
-                                {
-                                    bool foreign = ClassUtils.isForeignID(l2[k]);
-                                    if (foreign)
-                                    {
-                                        l2[k] = ClassUtils.Reverse(l2[k]);
-                                    }
-                                    LeasingOwner.idNumber = l2[k];
-                                }
-                            }
-                            while (!ClassUtils.isArrayIncludeAllStringsParam(slExcelData.DataRows[rowNumberj], "החלק", "בזכות"))
-                            {
-                                string s1 = ClassUtils.buildCombinedline(slExcelData.DataRows[rowNumberj]);
-                                LeasingOwner.LeaserName = LeasingOwner.LeaserName + " " + s1;
-                                rowNumberj++;
-                            }
-                            if (ClassUtils.isArrayIncludeAllStringsParam(slExcelData.DataRows[rowNumberj], "החלק", "בזכות"))
-                            {
-                                rowNumberj++;
-                                LeasingOwner.LeaserPart = ClassUtils.buildReverseCombinedLine(slExcelData.DataRows[rowNumberj]);
-                            }
-                            if (ClassUtils.isArrayIncludeAllStringsParam(slExcelData.DataRows[rowNumberj + 1], "הערות"))
-                            {
-                                rowNumberj++;
-                                LeasingOwner.Remarks = ClassUtils.buildCombinedline(slExcelData.DataRows[rowNumberj]);
-                            }
-                            leasing.leasingOwners.Add(LeasingOwner);
+                            string s1 = ClassUtils.buildCombinedline(slExcelData.DataRows[rowNumberj]);
+                            LeasingOwner.LeaserName = LeasingOwner.LeaserName + " " + s1;
                             rowNumberj++;
-                            if (ClassUtils.isArrayIncludeAllStringsParam(slExcelData.DataRows[rowNumberj], "רמת", "חכירה"))
-                            {
-                                withinfLeasingSection = false;
-                            }
                         }
+                        if (ClassUtils.isArrayIncludeAllStringsParam(slExcelData.DataRows[rowNumberj], "החלק", "בזכות"))
+                        {
+                            rowNumberj++;
+                            LeasingOwner.LeaserPart = ClassUtils.buildReverseCombinedLine(slExcelData.DataRows[rowNumberj]);
+                        }
+                        if (ClassUtils.isArrayIncludeAllStringsParam(slExcelData.DataRows[rowNumberj + 1], "הערות"))
+                        {
+                            rowNumberj++;
+                            LeasingOwner.Remarks = ClassUtils.buildCombinedline(slExcelData.DataRows[rowNumberj]);
+                        }
+                        leasing.leasingOwners.Add(LeasingOwner);
+                        rowNumberj++;
+                        if (ClassUtils.isArrayIncludeAllStringsParam(slExcelData.DataRows[rowNumberj], "רמת", "חכירה"))
+                        {
+                            withinfLeasingSection = false;
+                        }
+                    
                     } while (withinfLeasingSection);
                     l1 = ClasszhuiotUtils.rawlineToKeyPropLeasing(slExcelData.DataRows[rowNumberj]);
                     rowNumberj++;
